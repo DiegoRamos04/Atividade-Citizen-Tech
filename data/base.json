@@ -1,1 +1,139 @@
-
+{
+  "base_conhecimento": [
+    {
+      "id": 1,
+      "tema": "Documentação e Benefícios",
+      "pergunta": "Como solicitar o Bilhete Único Especial para Pessoas com Deficiência em São Paulo?",
+      "palavras_chave": ["bilhete único especial", "passe livre", "transporte gratuito", "sptrans"],
+      "orientacao": "O Bilhete Único Especial pode ser solicitado nos postos de atendimento da SPTrans. É necessário apresentar laudo médico padrão da SPTrans (com CID), RG, CPF e comprovante de endereço recente. O laudo tem validade de 90 dias após a emissão.",
+      "fonte": "https://sptrans.com.br/deficiente",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 2,
+      "tema": "Direitos em Serviços Públicos",
+      "pergunta": "Pessoas com deficiência têm direito a acompanhante em consultas médicas pelo SUS?",
+      "palavras_chave": ["acompanhante", "sus", "hospital", "saúde", "direitos médicos"],
+      "orientacao": "Sim. O Estatuto da Pessoa com Deficiência (Lei nº 13.146/2015) garante o direito a acompanhante em consultas, exames e internações, tanto na rede pública (SUS) quanto na rede privada de saúde.",
+      "fonte": "Lei nº 13.146/2015, Art. 22",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 3,
+      "tema": "Mobilidade e Rotas",
+      "pergunta": "A Estação da Luz possui acessibilidade para cadeirantes?",
+      "palavras_chave": ["estação da luz", "metrô", "cadeirante", "elevador", "acessibilidade luz"],
+      "orientacao": "Sim, a Estação da Luz possui rotas acessíveis, incluindo elevadores que conectam as plataformas da CPTM e do Metrô (Linhas 1-Azul e 4-Amarela), além de piso tátil e bloqueios (catracas) preferenciais mais largos.",
+      "fonte": "https://www.metro.sp.gov.br/sua-viagem/acessibilidade",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 4,
+      "tema": "Documentação e Benefícios",
+      "pergunta": "Como funciona a isenção de IPVA para pessoas com deficiência?",
+      "palavras_chave": ["ipva", "isenção", "carro", "imposto", "veículo"],
+      "orientacao": "Pessoas com deficiência física, visual, mental ou autistas têm direito à isenção do IPVA para um veículo em seu nome. Em São Paulo, o pedido deve ser feito pelo sistema SIVEI da Secretaria da Fazenda, apresentando laudo médico pericial emitido por clínica credenciada ao Detran.",
+      "fonte": "Secretaria da Fazenda SP (portal.fazenda.sp.gov.br)",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 5,
+      "tema": "Documentação e Benefícios",
+      "pergunta": "Como tirar a credencial de estacionamento para vagas exclusivas?",
+      "palavras_chave": ["estacionamento", "vaga exclusiva", "credencial", "defis", "carro"],
+      "orientacao": "A credencial Defis (para vagas exclusivas) pode ser solicitada online pelo Portal SP156. É necessário enviar o RG, comprovante de residência e um laudo médico recente com o CID comprovando o comprometimento da mobilidade.",
+      "fonte": "Portal SP156 (sp156.prefeitura.sp.gov.br)",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 6,
+      "tema": "Documentação e Benefícios",
+      "pergunta": "O que é o BPC/LOAS e quem tem direito?",
+      "palavras_chave": ["bpc", "loas", "benefício", "inss", "dinheiro", "renda"],
+      "orientacao": "O Benefício de Prestação Continuada (BPC) garante um salário mínimo mensal à pessoa com deficiência de qualquer idade que comprove não possuir meios de se sustentar. A renda per capita da família deve ser inferior a 1/4 do salário mínimo. A solicitação é feita pelo Meu INSS.",
+      "fonte": "Lei Orgânica da Assistência Social (Lei nº 8.742/1993)",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 7,
+      "tema": "Documentação e Benefícios",
+      "pergunta": "Tenho direito a isenção de IPI na compra de carro zero?",
+      "palavras_chave": ["ipi", "carro zero", "compra de carro", "desconto", "isenção"],
+      "orientacao": "Sim. Pessoas com deficiência física, visual, mental severa ou profunda, e autistas podem comprar carros novos com isenção de IPI. O pedido é feito digitalmente através do sistema SISEN da Receita Federal.",
+      "fonte": "Receita Federal (gov.br/receitafederal)",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 8,
+      "tema": "Direitos em Serviços Públicos",
+      "pergunta": "Qual a porcentagem de cotas para PCD em concursos públicos?",
+      "palavras_chave": ["concurso", "cotas", "vagas", "emprego público", "prova"],
+      "orientacao": "Por lei, é reservado um percentual de até 20% das vagas oferecidas em concursos públicos federais para pessoas com deficiência. O mínimo exigido pela legislação na maioria dos estados e municípios é de 5%.",
+      "fonte": "Lei nº 8.112/1990 e Decreto nº 9.508/2018",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 9,
+      "tema": "Direitos em Serviços Públicos",
+      "pergunta": "Como funciona o atendimento prioritário em filas?",
+      "palavras_chave": ["fila", "prioridade", "banco", "mercado", "atendimento"],
+      "orientacao": "Pessoas com deficiência têm direito a atendimento prioritário em todas as instituições e serviços de atendimento ao público (bancos, supermercados, hospitais, órgãos públicos). Caso o local não respeite, pode ser denunciado ao Procon.",
+      "fonte": "Estatuto da Pessoa com Deficiência (Lei nº 13.146/2015)",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 10,
+      "tema": "Direitos em Serviços Públicos",
+      "pergunta": "Pessoa com deficiência paga meia-entrada em shows e cinemas?",
+      "palavras_chave": ["meia-entrada", "cinema", "show", "teatro", "ingresso"],
+      "orientacao": "Sim. A Lei da Meia-Entrada garante 50% de desconto no ingresso de cinemas, teatros, shows e eventos esportivos para pessoas com deficiência e para um acompanhante (quando houver necessidade comprovada).",
+      "fonte": "Lei nº 12.933/2013",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 11,
+      "tema": "Direitos em Serviços Públicos",
+      "pergunta": "Existe tempo adicional para PCD no ENEM e vestibulares?",
+      "palavras_chave": ["enem", "vestibular", "prova", "tempo extra", "escola"],
+      "orientacao": "Sim. Candidatos com deficiência podem solicitar tempo adicional de 60 minutos para a realização das provas do ENEM e da maioria dos vestibulares, desde que façam o pedido e enviem o laudo médico no momento da inscrição.",
+      "fonte": "Edital do ENEM / Inep",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 12,
+      "tema": "Mobilidade e Rotas",
+      "pergunta": "A Avenida Paulista é acessível para pessoas com deficiência visual e cadeirantes?",
+      "palavras_chave": ["avenida paulista", "paulista", "calçada", "semáforo sonoro", "rua"],
+      "orientacao": "A Avenida Paulista é uma das vias mais adaptadas de São Paulo. Ela conta com calçadas largas, piso tátil direcional e de alerta em toda sua extensão, além de semáforos sonoros para auxiliar na travessia de pessoas com deficiência visual.",
+      "fonte": "Prefeitura de São Paulo - Relatório de Acessibilidade",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 13,
+      "tema": "Mobilidade e Rotas",
+      "pergunta": "Como sei se o ônibus que vou pegar em São Paulo tem elevador?",
+      "palavras_chave": ["ônibus", "elevador", "transporte", "piso rebaixado", "ponto de ônibus"],
+      "orientacao": "Atualmente, quase 100% da frota de ônibus de São Paulo (SPTrans) é acessível. Você pode identificar veículos adaptados pelo selo internacional de acessibilidade na lataria. O aplicativo 'Olho Vivo' da SPTrans também indica quais veículos adaptados estão na linha.",
+      "fonte": "SPTrans (sptrans.com.br/acessibilidade)",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 14,
+      "tema": "Mobilidade e Rotas",
+      "pergunta": "Existe táxi adaptado para cadeirantes em São Paulo?",
+      "palavras_chave": ["táxi", "taxi acessível", "cadeirante", "carro adaptado"],
+      "orientacao": "Sim, a cidade conta com o serviço de Táxi Acessível. São vans ou veículos grandes adaptados com rampa ou elevador, onde o passageiro não precisa sair da cadeira de rodas. O serviço pode ser solicitado por aplicativos homologados pela prefeitura.",
+      "fonte": "Departamento de Transportes Públicos (DTP) - SP",
+      "data_verificacao": "2026-11-13"
+    },
+    {
+      "id": 15,
+      "tema": "Mobilidade e Rotas",
+      "pergunta": "O Parque Ibirapuera tem rotas acessíveis?",
+      "palavras_chave": ["parque ibirapuera", "ibirapuera", "parque", "lazer", "passeio"],
+      "orientacao": "Sim, o Parque Ibirapuera possui rampas de acesso nos portões principais, banheiros adaptados e caminhos pavimentados que facilitam a circulação de cadeiras de rodas. Museus dentro do parque (como o MAM e a Oca) também possuem elevadores e rampas.",
+      "fonte": "Urbia Parques (urbiaparques.com.br/parqueibirapuera)",
+      "data_verificacao": "2026-11-13"
+    }
+ ]
+}
