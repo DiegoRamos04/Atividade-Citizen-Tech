@@ -41,4 +41,4 @@ if __name__ == "__main__":
         print(f"Fonte: {base_dados[0]['fonte']}")
         print("-" * 40)
     else:
-        print("\n[FALHA] Não foi possível carregar as orientações. Verifique os erros acima."
+        print("\n[FALHA] Não foi possível carregar as orientações. Verifique os erros acima.")
