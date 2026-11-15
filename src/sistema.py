@@ -324,14 +324,14 @@ def main():
         print(f"  • {indice}. {tema} ({resumo_temas[tema]} orientações)")
 
     while True:
-        nome_modelo = prompts.MODELOS_PROMPT[modelo_atual]["nome"]
+        rotulo_formato = "Guia Didático" if modelo_atual == "didatico" else "Resposta Direta"
         print("\n" + "=" * 72)
-        print(f"MENU PRINCIPAL")
+        print("MENU PRINCIPAL")
         print("=" * 72)
         print("  1. Fazer uma pergunta ou buscar por palavras-chave")
         print("  2. Navegar por temas disponíveis")
         print("  3. Consultar orientação diretamente por ID")
-        print("  4. Alternar formato das respostas (Atual: {rotulo_formato})")
+        print(f"  4. Alternar formato das respostas (Atual: {rotulo_formato})")
         print("  5. Comparar os 2 modelos de prompt em uma orientação")
         print("  6. Explorar conexão entre assuntos no grafo (Dijkstra)")
         print("  7. Executar bateria de testes e gerar indicadores (15 testes)")
