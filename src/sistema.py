@@ -1,40 +1,22 @@
 import time
 
-from avaliacao import executar_bateria_testes, formatar_relatorio_avaliacao
-from base_dados import (
-    buscar_por_id,
-    carregar_base_conhecimento,
-    contar_por_tema,
-    listar_temas,
-)
-from busca_grafo import (
-    buscar_orientacoes,
-    classificar_resultado_busca,
-    encontrar_caminho_assuntos,
-    filtrar_por_tema,
-    obter_relacionados,
-)
-from prompts import (
-    MODELOS_PROMPT,
-    comparar_modelos_prompt,
-    gerar_resposta_ambigua,
-    gerar_resposta_estruturada,
-    gerar_resposta_sem_correspondencia,
-    validar_entrada_consulta,
-)
+import avaliacao
+import base_dados
+import busca_grafo
+import prompts
 
 
-def obter_intervalo_ids(base_dados):
+def obter_intervalo_ids(base):
     """
     Retorna o menor e o maior ID presentes na base carregada,
     permitindo que novos registros no JSON sejam reconhecidos dinamicamente.
     """
-    ids = [int(reg["id"]) for reg in base_dados]
+    ids = [int(reg["id"]) for reg in base]
     return min(ids), max(ids)
 
 
 def exibir_e_navegar_orientacao(
-    base_dados,
+    base,
     registro,
     modelo_atual,
     pontuacao=None,
@@ -52,8 +34,8 @@ def exibir_e_navegar_orientacao(
     tempo_atual = tempo_ms
 
     while True:
-        relacionados = obter_relacionados(base_dados, registro_atual["id"], limite=3)
-        resposta_formatada = gerar_resposta_estruturada(
+        relacionados = busca_grafo.obter_relacionados(base, registro_atual["id"], limite=3)
+        resposta_formatada = prompts.gerar_resposta_estruturada(
             registro=registro_atual,
             modelo=modelo_atual,
             relacionados=relacionados,
@@ -89,7 +71,7 @@ def exibir_e_navegar_orientacao(
             print("[AVISO] Opção inválida. Digite um número da lista ou 0 para voltar ao menu.")
 
 
-def fluxo_consulta_pergunta(base_dados, temas, modelo_atual):
+def fluxo_consulta_pergunta(base, temas, modelo_atual):
     """
     Recebe uma pergunta ou palavras-chave em texto livre, valida a entrada,
     mede o tempo de consulta e trata correspondência única, ambiguidade ou
@@ -100,7 +82,7 @@ def fluxo_consulta_pergunta(base_dados, temas, modelo_atual):
     pergunta = input("Digite sua dúvida: ")
 
     inicio = time.perf_counter()
-    eh_valida, mensagem_erro = validar_entrada_consulta(pergunta)
+    eh_valida, mensagem_erro = prompts.validar_entrada_consulta(pergunta)
 
     if not eh_valida:
         tempo_ms = (time.perf_counter() - inicio) * 1000
@@ -108,14 +90,14 @@ def fluxo_consulta_pergunta(base_dados, temas, modelo_atual):
         print(f"[Métrica] Tempo de validação: {tempo_ms:.3f} ms")
         return
 
-    resultados = buscar_orientacoes(base_dados, pergunta)
-    classificacao = classificar_resultado_busca(resultados)
+    resultados = busca_grafo.buscar_orientacoes(base, pergunta)
+    classificacao = busca_grafo.classificar_resultado_busca(resultados)
     tempo_ms = (time.perf_counter() - inicio) * 1000
 
     if classificacao == "unico":
         melhor = resultados[0]
         exibir_e_navegar_orientacao(
-            base_dados=base_dados,
+            base=base,
             registro=melhor["registro"],
             modelo_atual=modelo_atual,
             pontuacao=melhor["pontuacao"],
@@ -125,14 +107,14 @@ def fluxo_consulta_pergunta(base_dados, temas, modelo_atual):
 
     elif classificacao == "ambiguo":
         candidatos = resultados[:3]
-        print("\n" + gerar_resposta_ambigua(pergunta, candidatos, limite=3))
+        print("\n" + prompts.gerar_resposta_ambigua(pergunta, candidatos, limite=3))
         print(f"[Métrica] Tempo de busca: {tempo_ms:.3f} ms")
 
         escolha = input("Digite o número da opção desejada (ou 0 para cancelar): ").strip()
         if escolha.isdigit() and 1 <= int(escolha) <= len(candidatos):
             selecionado = candidatos[int(escolha) - 1]
             exibir_e_navegar_orientacao(
-                base_dados=base_dados,
+                base=base,
                 registro=selecionado["registro"],
                 modelo_atual=modelo_atual,
                 pontuacao=selecionado["pontuacao"],
@@ -145,16 +127,16 @@ def fluxo_consulta_pergunta(base_dados, temas, modelo_atual):
     else:
         print(
             "\n"
-            + gerar_resposta_sem_correspondencia(
+            + prompts.gerar_resposta_sem_correspondencia(
                 pergunta,
                 temas,
-                sugestoes_iniciais=base_dados[:3],
+                sugestoes_iniciais=base[:3],
             )
         )
         print(f"[Métrica] Tempo de busca: {tempo_ms:.3f} ms")
 
 
-def fluxo_navegar_por_tema(base_dados, temas, resumo_temas, modelo_atual):
+def fluxo_navegar_por_tema(base, temas, resumo_temas, modelo_atual):
     """
     Permite escolher um tema principal no menu e selecionar uma orientação
     específica dentro da hierarquia organizada por tema.
@@ -173,7 +155,7 @@ def fluxo_navegar_por_tema(base_dados, temas, resumo_temas, modelo_atual):
         return
 
     tema_selecionado = temas[int(escolha_tema) - 1]
-    orientacoes_tema = filtrar_por_tema(base_dados, tema_selecionado)
+    orientacoes_tema = busca_grafo.filtrar_por_tema(base, tema_selecionado)
 
     print(f"\nOrientações disponíveis em '{tema_selecionado}':")
     for idx, reg in enumerate(orientacoes_tema, start=1):
@@ -193,19 +175,19 @@ def fluxo_navegar_por_tema(base_dados, temas, resumo_temas, modelo_atual):
     tempo_ms = (time.perf_counter() - inicio) * 1000
 
     exibir_e_navegar_orientacao(
-        base_dados=base_dados,
+        base=base,
         registro=registro_escolhido,
         modelo_atual=modelo_atual,
         tempo_ms=tempo_ms,
     )
 
 
-def fluxo_consultar_por_id(base_dados, modelo_atual):
+def fluxo_consultar_por_id(base, modelo_atual):
     """
     Recupera diretamente uma orientação pelo seu identificador numérico (ID),
     atendendo ao requisito de busca por identificador, tema ou palavras-chave.
     """
-    id_min, id_max = obter_intervalo_ids(base_dados)
+    id_min, id_max = obter_intervalo_ids(base)
     print(f"\n--- CONSULTA DIRETA POR IDENTIFICADOR (ID #{id_min} a #{id_max}) ---")
     entrada = input("Digite o ID da orientação (ou Enter para voltar): ").strip()
 
@@ -217,7 +199,7 @@ def fluxo_consultar_por_id(base_dados, modelo_atual):
         return
 
     inicio = time.perf_counter()
-    registro = buscar_por_id(base_dados, int(entrada))
+    registro = base_dados.buscar_por_id(base, int(entrada))
     tempo_ms = (time.perf_counter() - inicio) * 1000
 
     if not registro:
@@ -225,7 +207,7 @@ def fluxo_consultar_por_id(base_dados, modelo_atual):
         return
 
     exibir_e_navegar_orientacao(
-        base_dados=base_dados,
+        base=base,
         registro=registro,
         modelo_atual=modelo_atual,
         tempo_ms=tempo_ms,
@@ -238,7 +220,7 @@ def fluxo_alternar_prompt(modelo_atual):
     regras e formato) e permite alternar o modelo ativo no assistente.
     """
     print("\n--- ESTRATÉGIAS DE PROMPT / FORMATAÇÃO DE RESPOSTA ---")
-    for idx, (chave, dados) in enumerate(MODELOS_PROMPT.items(), start=1):
+    for idx, (chave, dados) in enumerate(prompts.MODELOS_PROMPT.items(), start=1):
         ativo = " (ATIVO)" if chave == modelo_atual else ""
         print(f"\n[{idx}] {dados['nome']}{ativo}")
         print(f"    Papel   : {dados['papel_assistente']}")
@@ -262,12 +244,12 @@ def fluxo_alternar_prompt(modelo_atual):
     return modelo_atual
 
 
-def fluxo_comparar_prompts(base_dados):
+def fluxo_comparar_prompts(base):
     """
     Compara os dois modelos de prompt lado a lado em um registro da base,
     evidenciando diferenças de clareza, estrutura e continuidade de consulta.
     """
-    id_min, id_max = obter_intervalo_ids(base_dados)
+    id_min, id_max = obter_intervalo_ids(base)
     print("\n--- COMPARAÇÃO ENTRE OS 2 MODELOS DE PROMPT ---")
     print(f"Informe um ID ({id_min} a {id_max}) ou pressione Enter para usar o ID #1 (Bilhete Único):")
     entrada = input("ID do registro: ").strip()
@@ -280,21 +262,21 @@ def fluxo_comparar_prompts(base_dados):
         print("[ERRO] ID inválido. Informe apenas números.")
         return
 
-    registro = buscar_por_id(base_dados, id_escolhido)
+    registro = base_dados.buscar_por_id(base, id_escolhido)
     if not registro:
         print(f"[ERRO] Nenhum registro encontrado com ID #{id_escolhido}.")
         return
 
-    relacionados = obter_relacionados(base_dados, registro["id"], limite=3)
-    print(comparar_modelos_prompt(registro, relacionados=relacionados))
+    relacionados = busca_grafo.obter_relacionados(base, registro["id"], limite=3)
+    print(prompts.comparar_modelos_prompt(registro, relacionados=relacionados))
 
 
-def fluxo_caminho_grafo(base_dados):
+def fluxo_caminho_grafo(base):
     """
     Utiliza Busca em Largura (BFS) sobre o grafo de conhecimento para mostrar
     a menor trilha semântica entre duas orientações distintas da base.
     """
-    id_min, id_max = obter_intervalo_ids(base_dados)
+    id_min, id_max = obter_intervalo_ids(base)
     print("\n--- EXPLORADOR DE CAMINHOS NO GRAFO DE CONHECIMENTO (BFS) ---")
     print(f"Descubra a menor conexão entre dois registros (IDs #{id_min} a #{id_max}).")
     origem_txt = input("ID de origem (ex.: 1): ").strip()
@@ -304,7 +286,7 @@ def fluxo_caminho_grafo(base_dados):
         print("[ERRO] Informe IDs numéricos válidos.")
         return
 
-    caminho = encontrar_caminho_assuntos(base_dados, int(origem_txt), int(destino_txt))
+    caminho = busca_grafo.encontrar_caminho_assuntos(base, int(origem_txt), int(destino_txt))
     if not caminho:
         print("[AVISO] Não foi possível encontrar um caminho entre os IDs informados.")
         return
@@ -325,24 +307,24 @@ def main():
     print("Aviso: Protótipo informativo não oficial. Não insira dados pessoais.")
     print("=" * 72)
 
-    base_dados = carregar_base_conhecimento()
-    if not base_dados:
+    base = base_dados.carregar_base_conhecimento()
+    if not base:
         print("\n[FALHA] Encerrando o sistema pois nenhuma orientação válida foi carregada.")
         return
 
-    temas = listar_temas(base_dados)
-    resumo_temas = contar_por_tema(base_dados)
+    temas = base_dados.listar_temas(base)
+    resumo_temas = base_dados.contar_por_tema(base)
     modelo_atual = "didatico"
 
     print(
-        f"\n[SUCESSO] {len(base_dados)} orientações verificadas carregadas "
+        f"\n[SUCESSO] {len(base)} orientações verificadas carregadas "
         f"em {len(temas)} temas:"
     )
     for indice, tema in enumerate(temas, start=1):
         print(f"  • {indice}. {tema} ({resumo_temas[tema]} orientações)")
 
     while True:
-        nome_modelo = MODELOS_PROMPT[modelo_atual]["nome"]
+        nome_modelo = prompts.MODELOS_PROMPT[modelo_atual]["nome"]
         print("\n" + "=" * 72)
         print(f"MENU PRINCIPAL | Estratégia ativa: {nome_modelo}")
         print("=" * 72)
@@ -363,20 +345,20 @@ def main():
             break
 
         if opcao == "1":
-            fluxo_consulta_pergunta(base_dados, temas, modelo_atual)
+            fluxo_consulta_pergunta(base, temas, modelo_atual)
         elif opcao == "2":
-            fluxo_navegar_por_tema(base_dados, temas, resumo_temas, modelo_atual)
+            fluxo_navegar_por_tema(base, temas, resumo_temas, modelo_atual)
         elif opcao == "3":
-            fluxo_consultar_por_id(base_dados, modelo_atual)
+            fluxo_consultar_por_id(base, modelo_atual)
         elif opcao == "4":
             modelo_atual = fluxo_alternar_prompt(modelo_atual)
         elif opcao == "5":
-            fluxo_comparar_prompts(base_dados)
+            fluxo_comparar_prompts(base)
         elif opcao == "6":
-            fluxo_caminho_grafo(base_dados)
+            fluxo_caminho_grafo(base)
         elif opcao == "7":
-            relatorio = executar_bateria_testes(base_dados)
-            print("\n" + formatar_relatorio_avaliacao(relatorio))
+            relatorio = avaliacao.executar_bateria_testes(base)
+            print("\n" + avaliacao.formatar_relatorio_avaliacao(relatorio))
         elif opcao == "0":
             print("\nEncerrando o IncluiSP | Citizen Assist AI. Obrigado por utilizar!")
             break
