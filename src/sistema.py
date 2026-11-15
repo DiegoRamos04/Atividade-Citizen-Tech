@@ -234,13 +234,13 @@ def fluxo_alternar_prompt(modelo_atual):
     ).strip()
 
     if escolha == "1":
-        print("[SUCESSO] Estratégia alterada para: Modelo 1 — Resposta Direta e Objetiva.")
+        print("[SUCESSO] Formato alterado para: Resposta Direta e Objetiva.")
         return "direto"
     if escolha == "2":
-        print("[SUCESSO] Estratégia alterada para: Modelo 2 — Guia Estruturado e Acessível.")
+        print("[SUCESSO] Formato alterado para: Guia Estruturado e Acessível.")
         return "didatico"
     if escolha != "":
-        print("[AVISO] Opção inválida. Mantendo a estratégia atual.")
+        print("[AVISO] Opção inválida. Mantendo o formato atual.")
     return modelo_atual
 
 
@@ -273,11 +273,11 @@ def fluxo_comparar_prompts(base):
 
 def fluxo_caminho_grafo(base):
     """
-    Utiliza Busca em Largura (BFS) sobre o grafo de conhecimento para mostrar
-    a menor trilha semântica entre duas orientações distintas da base.
+    Utiliza o algoritmo de Dijkstra sobre o grafo ponderado de conhecimento
+    para encontrar a menor trilha semântica entre duas orientações da base.
     """
     id_min, id_max = obter_intervalo_ids(base)
-    print("\n--- EXPLORADOR DE CAMINHOS NO GRAFO DE CONHECIMENTO (BFS) ---")
+    print("\n--- EXPLORADOR DE CAMINHOS NO GRAFO DE CONHECIMENTO (DIJKSTRA) ---")
     print(f"Descubra a menor conexão entre dois registros (IDs #{id_min} a #{id_max}).")
     origem_txt = input("ID de origem (ex.: 1): ").strip()
     destino_txt = input("ID de destino (ex.: 20): ").strip()
@@ -326,14 +326,14 @@ def main():
     while True:
         nome_modelo = prompts.MODELOS_PROMPT[modelo_atual]["nome"]
         print("\n" + "=" * 72)
-        print(f"MENU PRINCIPAL | Estratégia ativa: {nome_modelo}")
+        print(f"MENU PRINCIPAL")
         print("=" * 72)
         print("  1. Fazer uma pergunta ou buscar por palavras-chave")
         print("  2. Navegar por temas disponíveis")
         print("  3. Consultar orientação diretamente por ID")
-        print("  4. Alternar estratégia de prompt / resposta (Modelo 1 ou Modelo 2)")
+        print("  4. Alternar formato das respostas (Atual: {rotulo_formato})")
         print("  5. Comparar os 2 modelos de prompt em uma orientação")
-        print("  6. Explorar conexão entre assuntos no grafo (BFS)")
+        print("  6. Explorar conexão entre assuntos no grafo (Dijkstra)")
         print("  7. Executar bateria de testes e gerar indicadores (15 testes)")
         print("  0. Sair")
         print("-" * 72)
