@@ -1,4 +1,4 @@
-from collections import deque
+import heapq
 import re
 import unicodedata
 
@@ -271,8 +271,10 @@ def obter_relacionados(base_dados, id_registro, limite=3):
 
 def encontrar_caminho_assuntos(base_dados, id_origem, id_destino):
     """
-    Algoritmo de Busca em Largura (BFS) no grafo de conhecimento para encontrar
-    a menor trilha de navegação entre dois assuntos distintos (Fase 4: Grafos).
+    Algoritmo de Dijkstra no grafo ponderado de conhecimento (Fase 4: Grafos)
+    para encontrar a trilha de menor custo semântico entre dois assuntos:
+      - Custo 1: assuntos conectados dentro do mesmo tema;
+      - Custo 2: transição entre temas distintos.
     """
     origem = int(id_origem)
     destino = int(id_destino)
@@ -282,20 +284,26 @@ def encontrar_caminho_assuntos(base_dados, id_origem, id_destino):
     if origem not in mapa_por_id or destino not in mapa_por_id:
         return []
 
-    fila = deque([[origem]])
-    visitados = {origem}
+    fila_prioridade = [(0, origem, [origem])]
+    menores_custos = {origem: 0}
 
-    while fila:
-        caminho = fila.popleft()
-        atual = caminho[-1]
+    while fila_prioridade:
+        custo_atual, atual, caminho = heapq.heappop(fila_prioridade)
 
         if atual == destino:
             return [mapa_por_id[node_id] for node_id in caminho]
 
+        if custo_atual > menores_custos.get(atual, float("inf")):
+            continue
+
+        tema_atual = mapa_por_id[atual]["tema"]
         for vizinho_id, _ in grafo.get(atual, []):
-            if vizinho_id not in visitados:
-                visitados.add(vizinho_id)
-                fila.append(caminho + [vizinho_id])
+            peso_aresta = 1 if mapa_por_id[vizinho_id]["tema"] == tema_atual else 2
+            novo_custo = custo_atual + peso_aresta
+
+            if novo_custo < menores_custos.get(vizinho_id, float("inf")):
+                menores_custos[vizinho_id] = novo_custo
+                heapq.heappush(fila_prioridade, (novo_custo, vizinho_id, caminho + [vizinho_id]))
 
     return []
 
