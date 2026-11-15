@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f9f4">
+  <meta name="description" content="IncluiSP ajuda você a planejar trajetos e encontrar recursos de acessibilidade em São Paulo.">
+  <title>IncluiSP — Sua cidade, sem barreiras</title>
+  <link rel="stylesheet" href="/vendor/leaflet.css">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/vendor/leaflet.js" defer></script>
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Pular para o conteúdo</a>
+  <header class="topbar">
+    <div class="top-inner">
+      <a class="brand" href="#routes" aria-label="IncluiSP, início">
+        <span class="brand-mark"><img src="/icons/accessibility.svg" alt=""></span>
+        <span>Inclui<span class="brand-accent">SP</span></span>
+      </a>
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#routes" data-view="routes"><img src="/icons/route.svg" alt="">Rotas e mapa</a>
+        <a href="#places" data-view="places"><img src="/icons/map-pin.svg" alt="">Lugares</a>
+        <a href="#benefits" data-view="benefits"><img src="/icons/ticket-percent.svg" alt="">Benefícios</a>
+        <a href="#assistant" data-view="assistant"><img src="/icons/sparkles.svg" alt="">Inclui IA</a>
+      </nav>
+      <a class="profile-link" href="#profile" data-view="profile"><img src="/icons/user-round.svg" alt="">Meu perfil</a>
+    </div>
+  </header>
+
+  <main class="shell" id="main" tabindex="-1">
+    <section id="view-routes" aria-labelledby="route-heading">
+      <div class="page-heading">
+        <div class="eyebrow"><img src="/icons/map-pin.svg" alt=""> SÃO PAULO, SP</div>
+        <h1 id="route-heading">Planeje seu trajeto<span>.</span></h1>
+        <p>Explore São Paulo e encontre caminhos que consideram suas necessidades de mobilidade.</p>
+      </div>
+
+      <div class="planner">
+        <div class="panel route-panel">
+          <div class="tool-heading">
+            <span class="tool-icon"><img src="/icons/route.svg" alt=""></span>
+            <div><h2>Planejador de rotas</h2><p>Escolha a origem e o destino</p></div>
+          </div>
+          <form id="route-form">
+            <div class="field-stack">
+              <div class="endpoints">
+                <div class="field">
+                  <label for="origin">Origem</label>
+                  <div class="input-icon"><img src="/icons/circle-dot.svg" alt=""><input id="origin" maxlength="150" placeholder="Digite um local de partida" autocomplete="off"></div>
+                  <div class="suggestions" id="origin-options" hidden></div>
+                </div>
+                <div class="field">
+                  <label for="destination">Destino</label>
+                  <div class="input-icon destination"><img src="/icons/map-pin.svg" alt=""><input id="destination" maxlength="150" placeholder="Digite seu destino" autocomplete="off"></div>
+                  <div class="suggestions" id="destination-options" hidden></div>
+                </div>
+              </div>
+              <button type="button" id="swap" class="icon-button swap" aria-label="Inverter origem e destino" title="Inverter origem e destino"><img src="/icons/arrow-down-up.svg" alt=""></button>
+            </div>
+            <div class="location-tools">
+              <button type="button" id="location" class="text-button"><img src="/icons/locate-fixed.svg" alt="">Usar minha localização</button>
+              <button type="button" id="pick-route" class="text-button"><img src="/icons/map-pin-plus.svg" alt="">Marcar no mapa</button>
+            </div>
+            <button type="submit" class="button primary route-submit"><img src="/icons/search.svg" alt="">Buscar rotas<img class="tail" src="/icons/arrow-right.svg" alt=""></button>
+          </form>
+          <p class="route-privacy">A busca envia os pontos selecionados ao serviço de roteamento.</p>
+          <div class="profile-hint">
+            <img src="/icons/sliders-horizontal.svg" alt="">
+            <div><strong>Perfil de mobilidade</strong><p id="profile-hint">Personalize as preferências do seu trajeto.</p></div>
+            <a href="#profile" aria-label="Editar perfil de mobilidade"><img src="/icons/chevron-right.svg" alt=""></a>
+          </div>
+          <p class="feedback" id="route-status" role="status"></p>
+          <div id="route-results"></div>
+        </div>
+
+        <div class="panel map-panel">
+          <div class="map-head">
+            <div class="map-label"><img src="/icons/map.svg" alt=""><h2>Mapa de São Paulo</h2></div>
+            <span class="map-type">Mapa de ruas</span>
+          </div>
+          <div id="map" aria-label="Mapa de São Paulo com locais e rotas" role="region">
+            <p class="map-message" id="map-message" role="status" hidden></p>
+          </div>
+          <div class="legend" aria-label="Legenda do mapa">
+            <span><img src="/icons/map-pin.svg" alt="" class="legend-place">Local com dados</span>
+            <span><img src="/icons/triangle-alert.svg" alt="" class="legend-warning">Barreira publicada</span>
+            <span><img src="/icons/minus.svg" alt="" class="legend-route">Percurso</span>
+            <button type="button" class="text-button map-overview" id="map-overview">Ver todos os locais</button>
+            <button type="button" class="text-button" id="map-retry" hidden>Recarregar mapa</button>
+          </div>
+          <div class="map-pick-actions actions" id="map-pick-actions" hidden>
+            <button type="button" class="button secondary" id="pick-center">Usar o centro do mapa</button>
+            <button type="button" class="text-button" id="cancel-pick">Cancelar seleção</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-heading"><h2>Acessibilidade no dia a dia</h2></div>
+      <div class="quick-grid">
+        <a class="quick panel" href="#places"><span class="tool-icon green"><img src="/icons/map-pin.svg" alt=""></span><span><strong>Explore lugares</strong><small>Encontre locais com recursos de acessibilidade.</small></span><img class="quick-arrow" src="/icons/arrow-up-right.svg" alt=""></a>
+        <a class="quick panel" href="#transport"><span class="tool-icon blue"><img src="/icons/train-front.svg" alt=""></span><span><strong>Transporte e ajuda</strong><small>Consulte estações, linhas e canais oficiais.</small></span><img class="quick-arrow" src="/icons/arrow-up-right.svg" alt=""></a>
+        <a class="quick panel" href="#places" id="nearby-hospitals"><span class="tool-icon green"><img src="/icons/hospital.svg" alt=""></span><span><strong>Hospitais próximos</strong><small>Veja as unidades mais perto de um ponto de referência.</small></span><img class="quick-arrow" src="/icons/arrow-up-right.svg" alt=""></a>
+        <a class="quick panel" href="#reports"><span class="tool-icon amber"><img src="/icons/flag.svg" alt=""></span><span><strong>Relate uma barreira</strong><small>Registre um obstáculo encontrado no caminho.</small></span><img class="quick-arrow" src="/icons/arrow-up-right.svg" alt=""></a>
+      </div>
+    </section>
+
+    <section id="view-places" aria-labelledby="places-heading" hidden>
+      <div class="page-heading"><div class="eyebrow"><img src="/icons/map-pin.svg" alt=""> CATÁLOGO</div><h1 id="places-heading">Lugares acessíveis<span>.</span></h1><p>Conheça os espaços, veja os recursos de acessibilidade e consulte as condições de visita.</p></div>
+      <aside class="panel contribution">
+        <span class="tool-icon"><img src="/icons/map-pin-plus.svg" alt=""></span>
+        <div><h2>Conhece algum lugar? Nos conte!</h2><p>Indique um local e conte quais recursos de acessibilidade encontrou.</p></div>
+        <a class="button primary" href="#suggest">Sugerir um lugar</a>
+      </aside>
+      <div class="panel filters">
+        <div class="field"><label for="place-query">Buscar local</label><div class="input-icon"><img src="/icons/search.svg" alt=""><input id="place-query" placeholder="Nome ou endereço"></div></div>
+        <div class="field"><label for="place-category">Categoria</label><select id="place-category"><option value="">Todas as categorias</option></select></div>
+        <div class="actions place-tools">
+          <button type="button" class="button secondary" id="ramp-restaurants"><img src="/icons/utensils.svg" alt="">Restaurantes com rampa</button>
+          <button type="button" class="button secondary" id="hospital-filter"><img src="/icons/hospital.svg" alt="">Hospitais próximos</button>
+          <button type="button" class="button secondary" id="shelter-filter"><img src="/icons/umbrella.svg" alt="">Locais cobertos</button>
+          <button type="button" class="text-button" id="clear-place-filters" hidden>Limpar filtros</button>
+        </div>
+        <div class="hospital-reference" id="hospital-reference" hidden>
+          <p id="hospital-distance-reference"></p>
+          <div class="actions">
+            <button type="button" class="text-button" id="hospital-locate"><img src="/icons/locate-fixed.svg" alt="">Usar minha localização</button>
+            <button type="button" class="text-button" id="hospital-use-origin" hidden>Usar origem do trajeto</button>
+          </div>
+          <p class="feedback" id="hospital-location-status" role="status"></p>
+        </div>
+        <fieldset><legend>Recursos de acessibilidade</legend><div class="checks" id="place-filters"></div></fieldset>
+        <p class="feedback" id="place-status" role="status"></p>
+      </div>
+      <div class="card-grid" id="places-list"></div>
+    </section>
+
+    <section id="view-suggest" aria-labelledby="suggest-heading" hidden>
+      <div class="page-heading"><div class="eyebrow"><img src="/icons/map-pin-plus.svg" alt=""> COMUNIDADE</div><h1 id="suggest-heading">Conhece algum lugar? Nos conte!</h1><p>A equipe revisa a sugestão antes de publicar o local no catálogo e no mapa.</p></div>
+      <div class="report-layout">
+        <form class="panel form-panel form-stack" id="suggest-form">
+          <h2>Sugerir um lugar</h2>
+          <div class="field"><label for="suggest-name">Nome do lugar</label><input id="suggest-name" required minlength="3" maxlength="100"></div>
+          <div class="field"><label for="suggest-category">Categoria</label><select id="suggest-category" required><option value="">Selecione uma categoria</option></select></div>
+          <div class="field"><label for="suggest-address">Endereço em São Paulo</label><input id="suggest-address" required minlength="3" maxlength="150"><div class="suggestions" id="suggest-options" hidden></div></div>
+          <div class="actions"><button type="button" class="text-button" id="suggest-search"><img src="/icons/search.svg" alt="">Buscar endereço</button><button type="button" class="text-button" id="suggest-pick"><img src="/icons/map-pin-plus.svg" alt="">Marcar no mapa</button></div>
+          <p class="feedback" id="suggest-point" role="status"></p>
+          <fieldset><legend>Recursos observados</legend><div class="checks" id="suggest-resources"></div></fieldset>
+          <div class="field"><label for="suggest-description">O que você encontrou no local?</label><textarea id="suggest-description" required minlength="10" maxlength="600" rows="4"></textarea></div>
+          <div class="field"><label for="suggest-photo">Foto do local <span>(opcional)</span></label><input id="suggest-photo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="suggest-photo-help"><small id="suggest-photo-help">Envie uma foto própria do local, sem pessoas identificáveis. JPG, PNG ou WebP de até 2 MB. Se aprovada, a imagem será publicada.</small></div>
+          <button type="submit" class="button primary">Enviar sugestão</button>
+          <p class="feedback" id="suggest-status" role="status"></p>
+        </form>
+        <div class="panel form-panel"><h2>Minhas sugestões</h2><div id="my-suggestions"></div></div>
+      </div>
+    </section>
+
+    <section id="view-benefits" aria-labelledby="benefits-heading" hidden>
+      <div class="page-heading"><div class="eyebrow"><img src="/icons/ticket-percent.svg" alt=""> BENEFÍCIOS</div><h1 id="benefits-heading">Benefícios e ofertas<span>.</span></h1><p>Consulte programas públicos, critérios e canais de solicitação.</p></div>
+      <h2>Benefícios e serviços públicos</h2>
+      <div class="card-grid" id="benefits-list"></div>
+      <h2 class="spaced">Ingressos e visitação</h2>
+      <div class="card-grid" id="culture-benefits"></div>
+      <section id="offers-section" aria-labelledby="offers-heading" hidden>
+        <h2 class="spaced" id="offers-heading">Ofertas e descontos</h2>
+        <div class="card-grid" id="offers-list"></div>
+      </section>
+    </section>
+
+    <section id="view-transport" aria-labelledby="transport-heading" hidden>
+      <div class="page-heading"><div class="eyebrow"><img src="/icons/train-front.svg" alt=""> SERVIÇOS URBANOS</div><h1 id="transport-heading">Transporte e ajuda<span>.</span></h1><p>Consulte recursos das estações e confirme o funcionamento com a operadora.</p></div>
+      <div class="panel form-panel transit-panel">
+        <h2>Estações, terminais e pontos de ônibus</h2>
+        <form id="transit-form" class="transit-form">
+          <div class="field"><label for="transit-mode">Tipo de local</label><select id="transit-mode"><option value="metro">Estações de metrô</option><option value="terminal">Terminais de ônibus</option><option value="bus">Pontos de ônibus</option></select></div>
+          <div class="field"><label for="transit-query">Nome, endereço ou código</label><input id="transit-query" maxlength="150" placeholder="Ex.: Sé, Linha 2, Terminal ou código"></div>
+          <button type="submit" class="button primary">Buscar</button>
+        </form>
+        <p class="feedback" id="transit-status" role="status"></p>
+        <div id="transit-results" class="transit-results"></div>
+        <div class="actions"><button type="button" class="button secondary" id="transit-prev" hidden>Anterior</button><button type="button" class="button secondary" id="transit-next" hidden>Próxima página</button></div>
+        <p class="meta">Localizações do <a href="https://novogeosampa.prefeitura.sp.gov.br/">GeoSampa</a> e referências das operadoras. Consulte o <a href="https://www.metro.sp.gov.br/sua-viagem/mapa-da-rede/">mapa oficial do Metrô</a> e os <a href="https://www.sptrans.com.br/terminais">terminais da SPTrans</a> para confirmar a operação.</p>
+      </div>
+      <h2 class="spaced">Operadoras e estações em destaque</h2>
+      <div class="card-grid" id="transport-list"></div>
+      <h2 class="spaced">Direitos, manutenção e apoio</h2>
+      <div class="card-grid" id="transport-guides"></div>
+      <div class="panel form-panel spaced">
+        <h2>Encontrou uma barreira durante o trajeto?</h2>
+        <p>Peça orientação à equipe do local. Se um equipamento estiver indisponível, confirme uma alternativa antes de seguir.</p>
+        <div class="actions"><a class="button secondary" href="#reports">Registrar uma ocorrência <img src="/icons/arrow-right.svg" alt=""></a><a class="button secondary" href="tel:156">Ligar para a Prefeitura · 156</a></div>
+      </div>
+    </section>
+
+    <section id="view-assistant" aria-labelledby="assistant-heading" hidden>
+      <div class="page-heading"><div class="eyebrow"><img src="/icons/sparkles.svg" alt=""> ASSISTENTE</div><h1 id="assistant-heading">Inclui IA<span>.</span></h1><p>Consulte a base de conhecimento sobre mobilidade e acessibilidade em São Paulo.</p></div>
+      <div class="panel chat">
+        <div class="tool-heading chat-head"><span class="tool-icon"><img src="/icons/sparkles.svg" alt=""></span><div><h2>Assistente IncluiSP</h2><p>Respostas com fontes documentadas</p></div></div>
+        <div id="messages" class="messages" role="log" aria-label="Conversa" aria-live="polite"><div class="message"><strong>Inclui IA</strong><p>Olá! Em que posso ajudar no seu deslocamento por São Paulo?</p></div></div>
+        <div class="prompt-list" id="assistant-prompts">
+          <button type="button">Como solicitar o Bilhete Único Especial?</button>
+          <button type="button">Onde encontro um parque acessível?</button>
+          <button type="button">E se o elevador da estação estiver quebrado?</button>
+          <button type="button">Quais são meus direitos no transporte público?</button>
+          <button type="button">Como ativar acessibilidade no Google Maps?</button>
+          <button type="button">Onde me abrigar se chover forte e eu estiver só?</button>
+        </div>
+        <form id="assistant-form" class="chat-form">
+          <label class="sr-only" for="question">Sua pergunta</label><input id="question" maxlength="400" required placeholder="Escreva sua pergunta">
+          <button type="submit" class="button primary">Enviar <img src="/icons/send.svg" alt=""></button>
+        </form>
+      </div>
+    </section>
+
+    <section id="view-profile" aria-labelledby="profile-heading" hidden>
+      <div class="page-heading"><div class="eyebrow"><img src="/icons/user-round.svg" alt=""> PREFERÊNCIAS</div><h1 id="profile-heading">Meu perfil<span>.</span></h1><p>Suas preferências ficam salvas neste navegador.</p></div>
+      <form class="panel form-panel form-stack" id="profile-form">
+        <div class="field"><label for="nickname">Nome ou apelido <span>(opcional)</span></label><input id="nickname" maxlength="60" autocomplete="nickname"></div>
+        <div class="field"><label for="mobility">Tipo de mobilidade</label><select id="mobility"><option value="">Selecione se desejar</option><option value="manual">Cadeira de rodas manual</option><option value="motorized">Cadeira de rodas motorizada</option><option value="crutches">Muletas ou bengala</option><option value="walker">Andador</option><option value="other">Outra necessidade de mobilidade</option></select></div>
+        <div class="field"><label for="preference">Preferência de trajeto</label><select id="preference"><option value="">Sem preferência</option><option value="short">Menor distância</option><option value="flat">Menor inclinação</option></select></div>
+        <div class="field"><label for="max-distance">Distância confortável em metros <span>(opcional)</span></label><input id="max-distance" type="number" min="25" max="50000" step="1"></div>
+        <label class="check"><input id="avoid-stairs" type="checkbox"> Priorizar trajetos que evitem escadas</label>
+        <label class="check"><input id="needs-help" type="checkbox"> Mostrar orientação de apoio no planejamento</label>
+        <div class="actions"><button type="submit" class="button primary">Salvar preferências</button><button type="button" class="button secondary" id="clear-profile">Limpar perfil</button></div>
+        <p class="feedback" id="profile-status" role="status"></p>
+      </form>
+    </section>
+
+    <section id="view-reports" aria-labelledby="reports-heading" hidden>
+      <div class="page-heading"><div class="eyebrow"><img src="/icons/flag.svg" alt=""> CONTRIBUA COM O MAPA</div><h1 id="reports-heading">Relate uma barreira<span>.</span></h1><p>Localização e descrição ficam públicas após a aprovação. Evite incluir dados pessoais no relato.</p></div>
+      <div class="report-layout">
+        <form class="panel form-panel form-stack" id="report-form">
+          <h2>Nova ocorrência</h2>
+          <div class="field"><label for="report-type">Tipo de ocorrência</label><select id="report-type" required><option value="">Selecione um tipo</option></select></div>
+          <div class="field"><label for="report-location">Localização</label><input id="report-location" required maxlength="150" placeholder="Endereço ou ponto de referência"><div class="suggestions" id="report-options" hidden></div></div>
+          <div class="actions"><button type="button" class="text-button" id="search-report"><img src="/icons/search.svg" alt="">Buscar endereço</button><button type="button" class="text-button" id="pick-report"><img src="/icons/map-pin-plus.svg" alt="">Marcar no mapa</button><button type="button" class="text-button" id="locate-report"><img src="/icons/locate-fixed.svg" alt="">Usar minha localização</button></div>
+          <p class="feedback" id="report-point" role="status"></p>
+          <div class="field"><label for="report-date">Data da ocorrência</label><input id="report-date" type="date" required></div>
+          <div class="field"><label for="report-description">Descrição</label><textarea id="report-description" required minlength="10" maxlength="600" rows="4" placeholder="Descreva a barreira e onde ela começa."></textarea></div>
+          <div class="field"><label for="report-photo">Foto <span>(opcional)</span></label><input id="report-photo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="photo-help"><small id="photo-help">JPG, PNG ou WebP de até 2 MB. A foto é visível para a moderação.</small></div>
+          <button type="submit" class="button primary">Enviar para análise <img src="/icons/arrow-right.svg" alt=""></button>
+          <p class="feedback" id="report-status" role="status"></p>
+        </form>
+        <div class="panel form-panel"><h2>Minhas ocorrências</h2><div id="my-reports"></div></div>
+      </div>
+    </section>
+
+    <section id="view-moderation" aria-labelledby="moderation-heading" hidden>
+      <div class="page-heading"><div class="eyebrow"><img src="/icons/shield-check.svg" alt=""> EQUIPE</div><h1 id="moderation-heading">Moderação<span>.</span></h1><p>Revise os relatos antes de publicá-los no mapa.</p></div>
+      <form id="moderation-form" class="panel form-panel form-stack"><div class="field"><label for="moderator-key">Chave da equipe</label><input id="moderator-key" type="password" required autocomplete="off"></div><button type="submit" class="button primary">Carregar fila</button><p class="feedback" id="moderation-status" role="status"></p></form>
+      <h2 class="spaced">Ocorrências</h2>
+      <div class="card-grid" id="moderation-list"></div>
+      <h2 class="spaced">Sugestões de lugares</h2>
+      <div class="card-grid" id="suggest-moderation-list"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div><a href="#routes" class="footer-brand">IncluiSP</a><span>Sua cidade, sem barreiras.</span></div>
+    <div><a href="#transport">Transporte e ajuda</a><a href="#reports">Ocorrências</a><a href="#moderation" id="moderation-link" hidden>Moderação</a><span>FIAP · CitizenTech 2026</span></div>
+  </footer>
+</body>
+</html>
