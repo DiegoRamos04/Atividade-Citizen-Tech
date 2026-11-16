@@ -208,8 +208,10 @@ def filtrar_por_tema(base_dados, tema_escolhido):
 def construir_grafo_conhecimento(base_dados):
     """
     Constrói o grafo completo de relações entre os registros da base.
-    Combina as arestas semânticas mapeadas com conexões dinâmicas por tema/palavras-chave,
-    permitindo que novos registros adicionados ao JSON sejam integrados automaticamente.
+    Prioridade das conexões:
+      1. Campo opcional 'relacionados' definido diretamente no registro JSON;
+      2. Arestas semânticas mapeadas em ARESTAS_SEMANTICAS;
+      3. Fallback dinâmico por palavras-chave e tema para registros novos.
     """
     mapa_por_id = {int(reg["id"]): reg for reg in base_dados}
     grafo = {}
@@ -218,14 +220,28 @@ def construir_grafo_conhecimento(base_dados):
         vizinhos = []
         ids_adicionados = {reg_id}
 
-        # 1. Adiciona arestas semânticas explícitas que existam na base atual
+        # 1. Lê conexões definidas diretamente no JSON (campo opcional 'relacionados')
+        for rel in registro.get("relacionados", []):
+            if isinstance(rel, dict) and "id" in rel:
+                destino_id = int(rel["id"])
+                motivo = rel.get("motivo", "Assunto relacionado cadastrado na base")
+            elif isinstance(rel, int):
+                destino_id = rel
+                motivo = "Assunto relacionado cadastrado na base"
+            else:
+                continue
+
+            if destino_id in mapa_por_id and destino_id not in ids_adicionados:
+                vizinhos.append((destino_id, motivo))
+                ids_adicionados.add(destino_id)
+
+        # 2. Adiciona arestas semânticas explícitas que existam na base atual
         for destino_id, motivo in ARESTAS_SEMANTICAS.get(reg_id, []):
             if destino_id in mapa_por_id and destino_id not in ids_adicionados:
                 vizinhos.append((destino_id, motivo))
                 ids_adicionados.add(destino_id)
 
-        # 2. Fallback dinâmico: se o registro for novo (ex.: ID > 22) ou tiver poucos vizinhos,
-        # conecta automaticamente a outros registros do mesmo tema ou com palavras-chave em comum.
+        # 3. Fallback dinâmico para garantir ao menos 3 conexões
         if len(vizinhos) < 3:
             kw_origem = {normalizar_texto(k) for k in registro["palavras_chave"]}
             for outro_id, outro_reg in mapa_por_id.items():

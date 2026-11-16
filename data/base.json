@@ -4,7 +4,12 @@
       "id": 1,
       "tema": "Documentação e Benefícios",
       "pergunta": "Como solicitar o Bilhete Único Especial para Pessoas com Deficiência em São Paulo?",
-      "palavras_chave": ["bilhete único especial", "passe livre", "transporte gratuito", "sptrans"],
+      "palavras_chave": [
+        "bilhete único especial",
+        "passe livre",
+        "transporte gratuito",
+        "sptrans"
+      ],
       "orientacao": "O Bilhete Único Especial pode ser solicitado nos postos de atendimento da SPTrans. É necessário apresentar laudo médico padrão da SPTrans (com CID), RG, CPF e comprovante de endereço recente. O laudo tem validade de 90 dias após a emissão.",
       "fonte": "https://sptrans.com.br/deficiente",
       "data_verificacao": "2026-11-13"
@@ -13,7 +18,13 @@
       "id": 2,
       "tema": "Direitos em Serviços Públicos",
       "pergunta": "Pessoas com deficiência têm direito a acompanhante em consultas médicas pelo SUS?",
-      "palavras_chave": ["acompanhante", "sus", "hospital", "saúde", "direitos médicos"],
+      "palavras_chave": [
+        "acompanhante",
+        "sus",
+        "hospital",
+        "saúde",
+        "direitos médicos"
+      ],
       "orientacao": "Sim. O Estatuto da Pessoa com Deficiência (Lei nº 13.146/2015, Art. 18) e a Carta dos Direitos dos Usuários da Saúde (Portaria MS nº 1.820/2009) garantem o direito a acompanhante em consultas, exames e internações no SUS e na rede privada.",
       "fonte": "Lei nº 13.146/2015 (Arts. 18 e 22) e Portaria MS nº 1.820/2009",
       "data_verificacao": "2026-11-13"
@@ -22,7 +33,13 @@
       "id": 3,
       "tema": "Mobilidade e Rotas",
       "pergunta": "A Estação da Luz possui acessibilidade para cadeirantes?",
-      "palavras_chave": ["estação da luz", "metrô", "cadeirante", "elevador", "acessibilidade luz"],
+      "palavras_chave": [
+        "estação da luz",
+        "metrô",
+        "cadeirante",
+        "elevador",
+        "acessibilidade luz"
+      ],
       "orientacao": "Sim, a Estação da Luz possui rotas acessíveis, incluindo elevadores que conectam as plataformas da CPTM e do Metrô (Linhas 1-Azul e 4-Amarela), além de piso tátil e bloqueios (catracas) preferenciais mais largos.",
       "fonte": "https://www.metro.sp.gov.br/sua-viagem/acessibilidade",
       "data_verificacao": "2026-11-13"
@@ -31,7 +48,13 @@
       "id": 4,
       "tema": "Documentação e Benefícios",
       "pergunta": "Como funciona a isenção de IPVA para pessoas com deficiência?",
-      "palavras_chave": ["ipva", "isenção", "carro", "imposto", "veículo"],
+      "palavras_chave": [
+        "ipva",
+        "isenção",
+        "carro",
+        "imposto",
+        "veículo"
+      ],
       "orientacao": "Pessoas com deficiência física, visual, mental ou autistas têm direito à isenção do IPVA para um veículo em seu nome. Em São Paulo, o pedido deve ser feito pelo sistema SIVEI da Secretaria da Fazenda, apresentando laudo médico pericial emitido por clínica credenciada ao Detran.",
       "fonte": "SIVEI / Secretaria da Fazenda SP (portal.fazenda.sp.gov.br/servicos/ipva)",
       "data_verificacao": "2026-11-13"
@@ -40,7 +63,13 @@
       "id": 5,
       "tema": "Documentação e Benefícios",
       "pergunta": "Como tirar a credencial de estacionamento para vagas exclusivas?",
-      "palavras_chave": ["estacionamento", "vaga exclusiva", "credencial", "defis", "carro"],
+      "palavras_chave": [
+        "estacionamento",
+        "vaga exclusiva",
+        "credencial",
+        "defis",
+        "carro"
+      ],
       "orientacao": "A credencial Defis (para vagas exclusivas) pode ser solicitada online pelo Portal SP156. É necessário enviar o RG, comprovante de residência e um laudo médico recente com o CID comprovando o comprometimento da mobilidade.",
       "fonte": "Portal SP156 - Cartão Defis (sp156.prefeitura.sp.gov.br) e Res. CONTRAN 965/2022",
       "data_verificacao": "2026-11-13"
@@ -49,7 +78,14 @@
       "id": 6,
       "tema": "Documentação e Benefícios",
       "pergunta": "O que é o BPC/LOAS e quem tem direito?",
-      "palavras_chave": ["bpc", "loas", "benefício", "inss", "dinheiro", "renda"],
+      "palavras_chave": [
+        "bpc",
+        "loas",
+        "benefício",
+        "inss",
+        "dinheiro",
+        "renda"
+      ],
       "orientacao": "O Benefício de Prestação Continuada (BPC) garante um salário mínimo mensal à pessoa com deficiência de qualquer idade que comprove não possuir meios de se sustentar. A renda per capita da família deve ser inferior a 1/4 do salário mínimo. A solicitação é feita pelo Meu INSS.",
       "fonte": "Lei Orgânica da Assistência Social (Lei nº 8.742/1993)",
       "data_verificacao": "2026-11-13"
@@ -58,7 +94,13 @@
       "id": 7,
       "tema": "Documentação e Benefícios",
       "pergunta": "Tenho direito a isenção de IPI na compra de carro zero?",
-      "palavras_chave": ["ipi", "carro zero", "compra de carro", "desconto", "isenção"],
+      "palavras_chave": [
+        "ipi",
+        "carro zero",
+        "compra de carro",
+        "desconto",
+        "isenção"
+      ],
       "orientacao": "Sim. Pessoas com deficiência física, visual, mental severa ou profunda, e autistas podem comprar carros novos com isenção de IPI. O pedido é feito digitalmente através do sistema SISEN da Receita Federal.",
       "fonte": "SISEN / Receita Federal (gov.br/receitafederal/pt-br/assuntos/isencoes/ipi)",
       "data_verificacao": "2026-11-13"
@@ -67,7 +109,13 @@
       "id": 8,
       "tema": "Direitos em Serviços Públicos",
       "pergunta": "Qual a porcentagem de cotas para PCD em concursos públicos?",
-      "palavras_chave": ["concurso", "cotas", "vagas", "emprego público", "prova"],
+      "palavras_chave": [
+        "concurso",
+        "cotas",
+        "vagas",
+        "emprego público",
+        "prova"
+      ],
       "orientacao": "Em concursos públicos federais, reserva-se de 5% a 20% das vagas para pessoas com deficiência (Lei nº 8.112/1990 e Decreto nº 9.508/2018). Nos estados e municípios vale legislação própria — no Estado de São Paulo, a Lei Complementar nº 683/1992 garante o mínimo de 5%.",
       "fonte": "Lei nº 8.112/1990, Decreto nº 9.508/2018 e LC Estadual SP nº 683/1992",
       "data_verificacao": "2026-11-13"
@@ -76,7 +124,13 @@
       "id": 9,
       "tema": "Direitos em Serviços Públicos",
       "pergunta": "Como funciona o atendimento prioritário em filas?",
-      "palavras_chave": ["fila", "prioridade", "banco", "mercado", "atendimento"],
+      "palavras_chave": [
+        "fila",
+        "prioridade",
+        "banco",
+        "mercado",
+        "atendimento"
+      ],
       "orientacao": "Pessoas com deficiência têm direito a atendimento prioritário em todas as instituições e serviços de atendimento ao público (bancos, supermercados, hospitais, órgãos públicos). Caso o local não respeite, pode ser denunciado ao Procon.",
       "fonte": "Estatuto da Pessoa com Deficiência (Lei nº 13.146/2015)",
       "data_verificacao": "2026-11-13"
@@ -85,7 +139,13 @@
       "id": 10,
       "tema": "Direitos em Serviços Públicos",
       "pergunta": "Pessoa com deficiência paga meia-entrada em shows e cinemas?",
-      "palavras_chave": ["meia-entrada", "cinema", "show", "teatro", "ingresso"],
+      "palavras_chave": [
+        "meia-entrada",
+        "cinema",
+        "show",
+        "teatro",
+        "ingresso"
+      ],
       "orientacao": "Sim. A Lei da Meia-Entrada garante 50% de desconto no ingresso de cinemas, teatros, shows e eventos esportivos para pessoas com deficiência e para um acompanhante (quando houver necessidade comprovada).",
       "fonte": "Lei nº 12.933/2013",
       "data_verificacao": "2026-11-13"
@@ -94,7 +154,13 @@
       "id": 11,
       "tema": "Direitos em Serviços Públicos",
       "pergunta": "Existe tempo adicional para PCD no ENEM e vestibulares?",
-      "palavras_chave": ["enem", "vestibular", "prova", "tempo extra", "escola"],
+      "palavras_chave": [
+        "enem",
+        "vestibular",
+        "prova",
+        "tempo extra",
+        "escola"
+      ],
       "orientacao": "Sim. Candidatos com deficiência podem solicitar tempo adicional de 60 minutos para a realização das provas do ENEM e da maioria dos vestibulares, desde que façam o pedido e enviem o laudo médico no momento da inscrição.",
       "fonte": "Edital do ENEM / Inep",
       "data_verificacao": "2026-11-13"
@@ -103,7 +169,13 @@
       "id": 12,
       "tema": "Mobilidade e Rotas",
       "pergunta": "A Avenida Paulista é acessível para pessoas com deficiência visual e cadeirantes?",
-      "palavras_chave": ["avenida paulista", "paulista", "calçada", "semáforo sonoro", "rua"],
+      "palavras_chave": [
+        "avenida paulista",
+        "paulista",
+        "calçada",
+        "semáforo sonoro",
+        "rua"
+      ],
       "orientacao": "A Avenida Paulista é uma das vias mais adaptadas de São Paulo. Ela conta com calçadas largas, piso tátil direcional e de alerta em toda sua extensão, além de semáforos sonoros para auxiliar na travessia de pessoas com deficiência visual.",
       "fonte": "SMPED / Prefeitura de SP (prefeitura.sp.gov.br/cidade/secretarias/pessoa_com_deficiencia)",
       "data_verificacao": "2026-11-13"
@@ -112,7 +184,13 @@
       "id": 13,
       "tema": "Mobilidade e Rotas",
       "pergunta": "Como sei se o ônibus que vou pegar em São Paulo tem elevador?",
-      "palavras_chave": ["ônibus", "elevador", "transporte", "piso rebaixado", "ponto de ônibus"],
+      "palavras_chave": [
+        "ônibus",
+        "elevador",
+        "transporte",
+        "piso rebaixado",
+        "ponto de ônibus"
+      ],
       "orientacao": "Atualmente, quase 100% da frota de ônibus de São Paulo (SPTrans) é acessível. Você pode identificar veículos adaptados pelo selo internacional de acessibilidade na lataria. O aplicativo 'Olho Vivo' da SPTrans também indica quais veículos adaptados estão na linha.",
       "fonte": "SPTrans (sptrans.com.br/acessibilidade)",
       "data_verificacao": "2026-11-13"
@@ -121,7 +199,12 @@
       "id": 14,
       "tema": "Mobilidade e Rotas",
       "pergunta": "Existe táxi adaptado para cadeirantes em São Paulo?",
-      "palavras_chave": ["táxi", "taxi acessível", "cadeirante", "carro adaptado"],
+      "palavras_chave": [
+        "táxi",
+        "taxi acessível",
+        "cadeirante",
+        "carro adaptado"
+      ],
       "orientacao": "Sim, a cidade conta com o serviço de Táxi Acessível. São vans ou veículos grandes adaptados com rampa ou elevador, onde o passageiro não precisa sair da cadeira de rodas. O serviço pode ser solicitado por aplicativos homologados pela prefeitura.",
       "fonte": "DTP / Prefeitura de SP - Táxi Acessível (prefeitura.sp.gov.br/cidade/secretarias/transportes)",
       "data_verificacao": "2026-11-13"
@@ -130,7 +213,13 @@
       "id": 15,
       "tema": "Mobilidade e Rotas",
       "pergunta": "O Parque Ibirapuera tem rotas acessíveis?",
-      "palavras_chave": ["parque ibirapuera", "ibirapuera", "parque", "lazer", "passeio"],
+      "palavras_chave": [
+        "parque ibirapuera",
+        "ibirapuera",
+        "parque",
+        "lazer",
+        "passeio"
+      ],
       "orientacao": "Sim, o Parque Ibirapuera possui rampas de acesso nos portões principais, banheiros adaptados e caminhos pavimentados que facilitam a circulação de cadeiras de rodas. Museus dentro do parque (como o MAM e a Oca) também possuem elevadores e rampas.",
       "fonte": "Urbia / Parque Ibirapuera - Acessibilidade (parqueibirapuera.org/planeje-sua-visita)",
       "data_verificacao": "2026-11-13"
@@ -139,64 +228,150 @@
       "id": 16,
       "tema": "Documentação e Benefícios",
       "pergunta": "Como funciona o BPC (LOAS) e qual a diferença para o auxílio por incapacidade?",
-      "palavras_chave": ["bpc", "loas", "inss", "beneficio assistencial", "auxilio doenca", "incapacidade", "renda"],
+      "palavras_chave": [
+        "bpc",
+        "loas",
+        "inss",
+        "beneficio assistencial",
+        "auxilio doenca",
+        "incapacidade",
+        "renda"
+      ],
       "orientacao": "O Benefício de Prestação Continuada (BPC/LOAS) é assistencial e voltado a pessoas com deficiência que comprovem impedimento de longo prazo e critério de renda familiar, sem exigir contribuição prévia ao INSS. Já o auxílio por incapacidade temporária é previdenciário e exige vínculo e carência no INSS. A condição de pessoa com deficiência, por si só, não garante aprovação automática. Aviso: consulte os critérios atualizados e faça o pedido exclusivamente pelo portal ou aplicativo Meu INSS.",
       "fonte": "Gov.br - BPC para Pessoa com Deficiência (https://www.gov.br/pt-br/servicos/solicitar-beneficio-assistencial-a-pessoa-com-deficiencia)",
       "data_verificacao": "2026-11-14"
-  },
-  {
+    },
+    {
       "id": 17,
       "tema": "Mobilidade e Rotas",
       "pergunta": "O que é o Serviço Atende+ da SPTrans e como funciona o transporte porta a porta?",
-      "palavras_chave": ["atende", "atende+", "porta a porta", "van", "sptrans", "transporte adaptado", "cadastro"],
+      "palavras_chave": [
+        "atende",
+        "atende+",
+        "porta a porta",
+        "van",
+        "sptrans",
+        "transporte adaptado",
+        "cadastro"
+      ],
       "orientacao": "O Serviço Atende+ é uma modalidade de transporte gratuito porta a porta da Prefeitura de São Paulo, operado com vans adaptadas para pessoas com deficiência física severa ou alto grau de comprometimento de mobilidade. O atendimento depende de avaliação médica, critérios de elegibilidade e agendamento prévio. Aviso: verifique a documentação exigida e os prazos de inscrição diretamente no canal oficial da SPTrans antes de solicitar.",
       "fonte": "SPTrans - Serviço Atende+ (https://www.sptrans.com.br/atende)",
       "data_verificacao": "2026-11-14"
-  },
-  {
+    },
+    {
       "id": 18,
       "tema": "Mobilidade e Rotas",
       "pergunta": "O que fazer se o elevador ou plataforma da estação de metrô estiver quebrado ou em manutenção?",
-      "palavras_chave": ["elevador", "quebrado", "manutencao", "inoperante", "plataforma", "estacao", "metro", "escadas"],
+      "palavras_chave": [
+        "elevador",
+        "quebrado",
+        "manutencao",
+        "inoperante",
+        "plataforma",
+        "estacao",
+        "metro",
+        "escadas"
+      ],
       "orientacao": "Procure imediatamente um funcionário identificado ou a equipe de segurança da estação para solicitar orientação sobre uma entrada alternativa acessível ou rota até outra estação com equipamento ativo. Você pode informar: 'Preciso de uma saída sem escadas. Qual caminho está disponível agora?'. Para suporte no Metrô, ligue 0800 770 7722; nos ônibus municipais, acione a SPTrans pelo 156. Aviso: este assistente não monitora o status de elevadores em tempo real.",
       "fonte": "Metrô de São Paulo - Canais de Atendimento e Acessibilidade (https://www.metro.sp.gov.br/pt_BR/sua-viagem/acessibilidade/)",
       "data_verificacao": "2026-11-14"
-  },
-  {
+    },
+    {
       "id": 19,
       "tema": "Direitos em Serviços Públicos",
       "pergunta": "Como agir em caso de recusa de embarque ou atendimento constrangedor no transporte público?",
-      "palavras_chave": ["recusa", "embarque", "motorista", "constrangimento", "discriminacao", "lbi", "onibus", "156"],
+      "palavras_chave": [
+        "recusa",
+        "embarque",
+        "motorista",
+        "constrangimento",
+        "discriminacao",
+        "lbi",
+        "onibus",
+        "156"
+      ],
       "orientacao": "Pela Lei Brasileira de Inclusão (Lei nº 13.146/2015, arts. 9º e 46), o acesso ao transporte e ao atendimento prioritário é garantido por lei. Em caso de recusa ou constrangimento, busque um local seguro, peça apoio a um funcionário ou à segurança e, se possível sem se expor a risco, anote horário, local, linha e prefixo do veículo. Registre a denúncia na Central 156 (SPTrans) ou nos canais oficiais do Metrô. Aviso: este assistente tem caráter informativo e não substitui canais oficiais de ouvidoria.",
       "fonte": "Lei Brasileira de Inclusão - Lei 13.146/2015 e SPTrans Central 156 (https://www.sptrans.com.br/fale-conosco/contatos/)",
       "data_verificacao": "2026-11-14"
-  },
-  {
+    },
+    {
       "id": 20,
       "tema": "Direitos em Serviços Públicos",
       "pergunta": "Quais museus e centros culturais em São Paulo oferecem acessibilidade e gratuidade para PcD e acompanhante?",
-      "palavras_chave": ["museu", "pinacoteca", "masp", "museu do futebol", "catavento", "gratuidade", "acompanhante", "libras", "braile"],
+      "palavras_chave": [
+        "museu",
+        "pinacoteca",
+        "masp",
+        "museu do futebol",
+        "catavento",
+        "gratuidade",
+        "acompanhante",
+        "libras",
+        "braile"
+      ],
       "orientacao": "Diversos equipamentos culturais de SP contam com recursos adaptados e benefícios no ingresso: a Pinacoteca (Pina Luz) oferece rampas, elevadores, videoguia em Libras, recursos táteis e gratuidade para PcD + 1 acompanhante; o MASP e o Museu do Futebol também concedem gratuidade para PcD + 1 acompanhante e empréstimo de cadeira de rodas; o Museu Catavento garante meia-entrada para PcD + 1 acompanhante. Aviso: confirme a necessidade de reserva prévia de ingressos no site oficial de cada instituição antes da visita.",
       "fonte": "Pinacoteca (pinacoteca.org.br), MASP (masp.org.br), Museu do Futebol (museudofutebol.org.br) e Catavento (museucatavento.org.br)",
       "data_verificacao": "2026-11-14"
-  },
-  {
+    },
+    {
       "id": 21,
       "tema": "Mobilidade e Rotas",
       "pergunta": "Como configurar rotas acessíveis no Google Maps e como funciona o Uber Assist?",
-      "palavras_chave": ["google maps", "maps", "aplicativo", "rota acessivel", "uber", "uber assist", "cadeira de rodas"],
+      "palavras_chave": [
+        "google maps",
+        "maps",
+        "aplicativo",
+        "rota acessivel",
+        "uber",
+        "uber assist",
+        "cadeira de rodas"
+      ],
       "orientacao": "No Google Maps (Android), pesquise o destino, toque em 'Rotas', selecione 'Transporte público', abra 'Opções' e marque 'Acessível para cadeira de rodas'. Já no aplicativo Uber, a categoria 'Uber Assist' oferece motoristas treinados para auxílio adicional, mas os carros comuns dessa categoria não possuem rampa ou elevador para embarque na própria cadeira de rodas. Aviso: confirme sempre o funcionamento dos elevadores das estações com a operadora antes de sair.",
       "fonte": "Google Suporte (support.google.com/accessibility/answer/6396990) e Uber Assist (uber.com/br/pt-br/ride/assist)",
       "data_verificacao": "2026-11-14"
-  },
-  {
+    },
+    {
       "id": 22,
       "tema": "Direitos em Serviços Públicos",
       "pergunta": "Onde buscar abrigo seguro durante tempestades ou alagamentos em São Paulo?",
-      "palavras_chave": ["chuva", "tempestade", "alagamento", "enchente", "abrigo", "emergencia", "bombeiros", "defesa civil"],
+      "palavras_chave": [
+        "chuva",
+        "tempestade",
+        "alagamento",
+        "enchente",
+        "abrigo",
+        "emergencia",
+        "bombeiros",
+        "defesa civil"
+      ],
       "orientacao": "Se estiver na rua durante chuva forte, busque um prédio fechado, aberto ao público e com funcionários — como shoppings, farmácias ou comércios com entrada acessível — sem atravessar áreas alagadas. Evite passagens subterrâneas, garagens e árvores isoladas. Em caso de risco imediato ou ilhamento, ligue 193 (Corpo de Bombeiros) ou 199 (Defesa Civil). Aviso: este assistente não acompanha condições climáticas ou bloqueios viários em tempo real.",
       "fonte": "Prefeitura de São Paulo e CGE - Orientações em Tempestades e Alagamentos (https://cge.prefeitura.sp.gov.br/v3/dicas.jsp)",
       "data_verificacao": "2026-11-14"
-  }
- ]
+    },
+    {
+      "id": 23,
+      "tema": "Documentação e Benefícios",
+      "pergunta": "Como solicitar a Carteira de Identificação da Pessoa com Transtorno do Espectro Autista (CiPTEA)?",
+      "palavras_chave": [
+        "ciptea",
+        "autismo",
+        "tea",
+        "carteira autista",
+        "identificacao"
+      ],
+      "orientacao": "A CiPTEA é gratuita e pode ser solicitada online pelo portal da Secretaria dos Direitos da Pessoa com Deficiência de SP, apresentando laudo médico com CID e documentos pessoais.",
+      "fonte": "Portal CiPTEA SP (ciptea.sp.gov.br)",
+      "data_verificacao": "2026-11-16",
+      "relacionados": [
+        {
+          "id": 2,
+          "motivo": "Direito a acompanhante no SUS"
+        },
+        {
+          "id": 9,
+          "motivo": "Prioridade de atendimento em filas"
+        }
+      ]
+    }
+  ]
 }

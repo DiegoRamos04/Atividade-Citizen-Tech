@@ -411,6 +411,136 @@ def fluxo_caminho_grafo(base):
         )
     pausar_retorno()
 
+def _ler_relacionados_input(base):
+    """
+    Auxiliar opcional para cadastrar conexões explícitas do grafo (campo 'relacionados')
+    ao adicionar ou editar um registro pelo terminal.
+    """
+    entrada_ids = input(
+        "IDs relacionados no grafo separados por vírgula (ex.: 1, 6 ou Enter para automático): "
+    ).strip()
+    if not entrada_ids:
+        return None
+
+    relacionados = []
+    for pedaco in entrada_ids.split(","):
+        pedaco = pedaco.strip()
+        if pedaco.isdigit():
+            id_rel = int(pedaco)
+            reg_destino = base_dados.buscar_por_id(base, id_rel)
+            if reg_destino:
+                motivo = input(
+                    f"  Motivo da conexão com ID #{id_rel} ({reg_destino['tema']}): "
+                ).strip()
+                relacionados.append({
+                    "id": id_rel,
+                    "motivo": motivo or f"Assunto relacionado ({reg_destino['tema']})",
+                })
+    return relacionados
+
+
+def fluxo_gerenciar_base(base, temas):
+    """
+    Permite acrescentar ou corrigir registros diretamente pela aplicação,
+    persistindo no data/base.json sem alterar o código-fonte.
+    """
+    limpar_tela()
+    print("=" * LARGURA_TELA)
+    print("MANUTENÇÃO DA BASE DE CONHECIMENTO (ADICIONAR / CORRIGIR)")
+    print("=" * LARGURA_TELA)
+    print("  1. Adicionar nova orientação")
+    print("  2. Corrigir orientação existente (por ID)")
+    print("  0. Voltar ao menu principal")
+    print("-" * LARGURA_TELA)
+
+    opcao = input("Escolha uma opção: ").strip()
+    if opcao in ("", "0"):
+        return
+
+    if opcao == "1":
+        limpar_tela()
+        proximo_id = base_dados.obter_proximo_id(base)
+        print("=" * LARGURA_TELA)
+        print(f"CADASTRAR NOVA ORIENTAÇÃO (ID #{proximo_id})")
+        print("=" * LARGURA_TELA)
+        print("Temas atuais:", ", ".join(temas))
+
+        tema = input("\nTema (escolha um existente ou digite um novo): ").strip()
+        pergunta = input("Pergunta de referência: ").strip()
+        kw_txt = input("Palavras-chave (separadas por vírgula): ").strip()
+        orientacao = input("Orientação resumida: ").strip()
+        fonte = input("Fonte / referência verificável: ").strip()
+        data_verif = input("Data de verificação (AAAA-MM-DD) [Enter = 2026-11-16]: ").strip() or "2026-11-16"
+
+        palavras_chave = [k.strip() for k in kw_txt.split(",") if k.strip()]
+        novo_reg = {
+            "id": proximo_id,
+            "tema": tema,
+            "pergunta": pergunta,
+            "palavras_chave": palavras_chave,
+            "orientacao": orientacao,
+            "fonte": fonte,
+            "data_verificacao": data_verif,
+        }
+
+        relacionados = _ler_relacionados_input(base)
+        if relacionados:
+            novo_reg["relacionados"] = relacionados
+
+        sucesso, mensagem = base_dados.adicionar_registro(base, novo_reg)
+        print(f"\n[{'SUCESSO' if sucesso else 'ERRO'}] {mensagem}")
+        pausar_retorno()
+
+    elif opcao == "2":
+        limpar_tela()
+        id_min, id_max = obter_intervalo_ids(base)
+        print("=" * LARGURA_TELA)
+        print(f"CORRIGIR ORIENTAÇÃO EXISTENTE (ID #{id_min} a #{id_max})")
+        print("=" * LARGURA_TELA)
+        id_txt = input("Informe o ID do registro a corrigir: ").strip()
+
+        if not id_txt.isdigit():
+            print("\n[ERRO] ID inválido.")
+            pausar_retorno()
+            return
+
+        reg = base_dados.buscar_por_id(base, int(id_txt))
+        if not reg:
+            print(f"\n[ERRO] Registro ID #{id_txt} não encontrado.")
+            pausar_retorno()
+            return
+
+        print(f"\nEditando [ID #{reg['id']}] {reg['pergunta']}")
+        print("(Pressione Enter em qualquer campo para manter o valor atual)\n")
+
+        novo_tema = input(f"Tema [{reg['tema']}]: ").strip() or None
+        nova_pergunta = input("Nova pergunta (ou Enter para manter): ").strip() or None
+        novas_kws_txt = input("Novas palavras-chave por vírgula (ou Enter para manter): ").strip()
+        nova_orientacao = input("Nova orientação (ou Enter para manter): ").strip() or None
+        nova_fonte = input(f"Nova fonte [{reg['fonte']}]: ").strip() or None
+        nova_data = input(f"Data verificação [{reg['data_verificacao']}]: ").strip() or None
+
+        atualizacoes = {
+            "tema": novo_tema,
+            "pergunta": nova_pergunta,
+            "orientacao": nova_orientacao,
+            "fonte": nova_fonte,
+            "data_verificacao": nova_data,
+        }
+        if novas_kws_txt:
+            atualizacoes["palavras_chave"] = [k.strip() for k in novas_kws_txt.split(",") if k.strip()]
+
+        relacionados = _ler_relacionados_input(base)
+        if relacionados is not None:
+            atualizacoes["relacionados"] = relacionados
+
+        sucesso, mensagem = base_dados.atualizar_registro(base, reg["id"], atualizacoes)
+        print(f"\n[{'SUCESSO' if sucesso else 'ERRO'}] {mensagem}")
+        pausar_retorno()
+
+    else:
+        print("\n[ERRO] Opção inválida.")
+        pausar_retorno()
 
 def main():
     limpar_tela()
@@ -453,6 +583,7 @@ def main():
         print("  5. Comparar os 2 modelos de prompt em uma orientação")
         print("  6. Explorar conexão entre assuntos no grafo (Dijkstra)")
         print("  7. Executar bateria de testes e gerar indicadores (15 testes)")
+        print("  8. Gerenciar base de conhecimento (Adicionar ou corrigir)")
         print("  0. Sair")
         print("-" * LARGURA_TELA)
 
@@ -479,12 +610,16 @@ def main():
             relatorio = avaliacao.executar_bateria_testes(base)
             print(avaliacao.formatar_relatorio_avaliacao(relatorio))
             pausar_retorno()
+        elif opcao == "8":
+            fluxo_gerenciar_base(base, temas)
+            temas = base_dados.listar_temas(base)
+            resumo_temas = base_dados.contar_por_tema(base)
         elif opcao == "0":
             limpar_tela()
             print("Encerrando o IncluiSP | Citizen Assist AI. Obrigado por utilizar!")
             break
         else:
-            print("\n[ERRO] Opção inexistente. Digite um número de 0 a 7.")
+            print("\n[ERRO] Opção inexistente. Digite um número de 0 a 8.")
             pausar_retorno()
 
 

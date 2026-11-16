@@ -107,3 +107,63 @@ def buscar_por_id(base_dados, id_procurado):
         if registro["id"] == id_procurado:
             return registro
     return None
+
+def salvar_base_conhecimento(base_dados, caminho_arquivo=CAMINHO_PADRAO_BASE):
+    """
+    Persiste a lista atualizada de orientações no arquivo JSON com indentação
+    legível e codificação UTF-8.
+    """
+    estrutura = {"base_conhecimento": base_dados}
+    with open(caminho_arquivo, "w", encoding="utf-8") as arquivo:
+        json.dump(estrutura, arquivo, ensure_ascii=False, indent=2)
+
+
+def obter_proximo_id(base_dados):
+    """
+    Calcula o próximo identificador numérico sequencial disponível na base.
+    """
+    if not base_dados:
+        return 1
+    return max(int(reg["id"]) for reg in base_dados) + 1
+
+
+def adicionar_registro(base_dados, novo_registro, caminho_arquivo=CAMINHO_PADRAO_BASE):
+    """
+    Valida os campos obrigatórios de um novo registro, atribui o próximo ID
+    automaticamente (caso não informado), anexa à base e salva no arquivo JSON.
+    """
+    registro_preparado = dict(novo_registro)
+    if "id" not in registro_preparado or registro_preparado["id"] is None:
+        registro_preparado["id"] = obter_proximo_id(base_dados)
+
+    if not validar_registro(registro_preparado):
+        return False, "Registro inválido: verifique se todos os campos obrigatórios foram preenchidos."
+
+    if buscar_por_id(base_dados, int(registro_preparado["id"])) is not None:
+        return False, f"Já existe um registro cadastrado com o ID #{registro_preparado['id']}."
+
+    base_dados.append(registro_preparado)
+    salvar_base_conhecimento(base_dados, caminho_arquivo)
+    return True, f"Registro ID #{registro_preparado['id']} adicionado e salvo com sucesso!"
+
+
+def atualizar_registro(base_dados, id_registro, campos_atualizados, caminho_arquivo=CAMINHO_PADRAO_BASE):
+    """
+    Atualiza campos de um registro existente (como orientação, fonte, data ou
+    assuntos relacionados), valida a integridade e grava no arquivo JSON.
+    """
+    registro_atual = buscar_por_id(base_dados, int(id_registro))
+    if not registro_atual:
+        return False, f"Registro ID #{id_registro} não encontrado na base."
+
+    copia_validacao = dict(registro_atual)
+    for chave, valor in campos_atualizados.items():
+        if valor is not None:
+            copia_validacao[chave] = valor
+
+    if not validar_registro(copia_validacao):
+        return False, "Alteração rejeitada: nenhum campo obrigatório pode ficar vazio."
+
+    registro_atual.update(copia_validacao)
+    salvar_base_conhecimento(base_dados, caminho_arquivo)
+    return True, f"Registro ID #{id_registro} atualizado e salvo com sucesso!"

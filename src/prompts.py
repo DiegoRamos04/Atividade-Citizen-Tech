@@ -355,13 +355,15 @@ def avaliar_modelos_em_consultas(casos_validos, obter_relacionados_fn):
                 modelo=codigo_modelo,
                 relacionados=rels,
             )
-            if reg["fonte"] in saida:
+            saida_linha_unica = " ".join(saida.split())
+
+            if reg["fonte"] in saida_linha_unica:
                 metricas[codigo_modelo]["fonte"] += 1
-            if reg["data_verificacao"] in saida:
+            if reg["data_verificacao"] in saida_linha_unica:
                 metricas[codigo_modelo]["data"] += 1
-            if "aviso" in saida.lower() or "não substitui canais" in saida.lower():
+            if "aviso" in saida_linha_unica.lower() or "não substitui canais" in saida_linha_unica.lower():
                 metricas[codigo_modelo]["aviso"] += 1
-            if "ASSUNTOS RELACIONADOS" in saida:
+            if "ASSUNTOS RELACIONADOS" in saida_linha_unica:
                 metricas[codigo_modelo]["relacionados"] += 1
             metricas[codigo_modelo]["linhas"] += len(saida.splitlines())
 
@@ -380,8 +382,8 @@ def avaliar_modelos_em_consultas(casos_validos, obter_relacionados_fn):
     m_did = resumo["modelos"]["didatico"]
     resumo["justificativa"] = (
         f"Nos {total} testes válidos, ambos atingiram {m_did['pct_fonte']:.0f}% de citação "
-        f"de fonte e data, porém o Modelo 2 (Didático) superou o Modelo 1 (Direto) em "
-        f"continuidade via grafo ({m_did['pct_relacionados']:.0f}% contra "
+        f"de fonte e {m_did['pct_data']:.0f}% de data, porém o Modelo 2 (Didático) superou "
+        f"o Modelo 1 (Direto) em continuidade via grafo ({m_did['pct_relacionados']:.0f}% contra "
         f"{m_dir['pct_relacionados']:.0f}%) e segmentação em 4 blocos "
         f"(média de {m_did['media_linhas']} linhas contra {m_dir['media_linhas']} linhas), "
         f"oferecendo maior clareza e rastreabilidade para orientação cidadã."
