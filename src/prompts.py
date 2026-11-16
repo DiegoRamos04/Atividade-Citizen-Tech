@@ -111,7 +111,6 @@ def gerar_resposta_estruturada(registro, modelo="didatico", relacionados=None, p
 
     if modelo == "direto":
         # Modelo 1: Resposta Direta e Objetiva
-        linhas.append("-" * LARGURA_TEXTO)
         linhas.append(f"[{MODELOS_PROMPT['direto']['nome']}]")
         linhas.append(f"Tema: {registro['tema']} | Registro #{registro['id']}")
         linhas.append("")
@@ -145,13 +144,11 @@ def gerar_resposta_estruturada(registro, modelo="didatico", relacionados=None, p
                 recuo_seguinte="",
             )
         )
-        linhas.append("-" * LARGURA_TEXTO)
 
     else:
         # Modelo 2: Guia Estruturado e Acessível (Cadeia de Instrução)
-        linhas.append("=" * LARGURA_TEXTO)
         linhas.append(f"[{MODELOS_PROMPT['didatico']['nome']}]")
-        linhas.append("=" * LARGURA_TEXTO)
+        linhas.append("")
         linhas.append(f"1. ASSUNTO IDENTIFICADO (ID #{registro['id']} — {registro['tema']})")
         linhas.append(
             formatar_paragrafo(
@@ -210,8 +207,6 @@ def gerar_resposta_estruturada(registro, modelo="didatico", relacionados=None, p
                         recuo_seguinte="         ",
                     )
                 )
-
-        linhas.append("=" * LARGURA_TEXTO)
 
     return "\n".join(linhas)
 
@@ -312,9 +307,8 @@ def comparar_modelos_prompt(registro, relacionados=None):
     para uma mesma orientação, facilitando a análise qualitativa no relatório e no terminal.
     """
     bloco_comparacao = [
-        "*" * LARGURA_TEXTO,
         "COMPARAÇÃO DE ESTRATÉGIAS DE PROMPT / FORMATAÇÃO DE RESPOSTA",
-        "*" * LARGURA_TEXTO,
+        "",
         gerar_resposta_estruturada(registro, modelo="direto"),
         "",
         gerar_resposta_estruturada(registro, modelo="didatico", relacionados=relacionados),
@@ -329,7 +323,6 @@ def comparar_modelos_prompt(registro, relacionados=None):
             recuo_inicial="• ",
             recuo_seguinte="  ",
         ),
-        "*" * LARGURA_TEXTO,
     ]
     return "\n".join(bloco_comparacao)
 
