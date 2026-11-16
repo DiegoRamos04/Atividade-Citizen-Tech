@@ -593,34 +593,38 @@ def main():
             print("\nEncerrando o IncluiSP | Citizen Assist AI. Até logo!")
             break
 
-        if opcao == "1":
-            fluxo_consulta_pergunta(base, temas, modelo_atual)
-        elif opcao == "2":
-            fluxo_navegar_por_tema(base, temas, resumo_temas, modelo_atual)
-        elif opcao == "3":
-            fluxo_consultar_por_id(base, modelo_atual)
-        elif opcao == "4":
-            modelo_atual = fluxo_alternar_prompt(modelo_atual)
-        elif opcao == "5":
-            fluxo_comparar_prompts(base)
-        elif opcao == "6":
-            fluxo_caminho_grafo(base)
-        elif opcao == "7":
-            limpar_tela()
-            relatorio = avaliacao.executar_bateria_testes(base)
-            print(avaliacao.formatar_relatorio_avaliacao(relatorio))
-            pausar_retorno()
-        elif opcao == "8":
-            fluxo_gerenciar_base(base, temas)
-            temas = base_dados.listar_temas(base)
-            resumo_temas = base_dados.contar_por_tema(base)
-        elif opcao == "0":
-            limpar_tela()
-            print("Encerrando o IncluiSP | Citizen Assist AI. Obrigado por utilizar!")
-            break
-        else:
-            print("\n[ERRO] Opção inexistente. Digite um número de 0 a 8.")
-            pausar_retorno()
+        try:
+            if opcao == "1":
+                fluxo_consulta_pergunta(base, temas, modelo_atual)
+            elif opcao == "2":
+                fluxo_navegar_por_tema(base, temas, resumo_temas, modelo_atual)
+            elif opcao == "3":
+                fluxo_consultar_por_id(base, modelo_atual)
+            elif opcao == "4":
+                modelo_atual = fluxo_alternar_prompt(modelo_atual)
+            elif opcao == "5":
+                fluxo_comparar_prompts(base)
+            elif opcao == "6":
+                fluxo_caminho_grafo(base)
+            elif opcao == "7":
+                limpar_tela()
+                relatorio = avaliacao.executar_bateria_testes(base)
+                print(avaliacao.formatar_relatorio_avaliacao(relatorio))
+                pausar_retorno()
+            elif opcao == "8":
+                fluxo_gerenciar_base(base, temas)
+                temas = base_dados.listar_temas(base)
+                resumo_temas = base_dados.contar_por_tema(base)
+            elif opcao == "0":
+                limpar_tela()
+                print("Encerrando o IncluiSP | Citizen Assist AI. Obrigado por utilizar!")
+                break
+            else:
+                print("\n[ERRO] Opção inexistente. Digite um número de 0 a 8.")
+                pausar_retorno()
+        except (KeyboardInterrupt, EOFError):
+            print("\n\n[AVISO] Operação interrompida pelo usuário. Retornando ao menu principal...")
+            time.sleep(1.2)
 
 
 if __name__ == "__main__":
