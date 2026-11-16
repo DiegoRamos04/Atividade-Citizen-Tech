@@ -190,12 +190,12 @@ def fluxo_consulta_pergunta(base, temas, modelo_atual):
 
 def fluxo_navegar_por_tema(base, temas, resumo_temas, modelo_atual):
     """
-    Permite escolher um tema principal no menu e selecionar uma orientação
-    específica dentro da hierarquia organizada por tema.
+    Navegação hierárquica em 3 níveis exigida pelo edital:
+      Nível 1 (Tema) -> Nível 2 (Subtema) -> Nível 3 (Orientação).
     """
     limpar_tela()
     print("=" * LARGURA_TELA)
-    print("NAVEGAÇÃO HIERÁRQUICA POR TEMAS")
+    print("NAVEGAÇÃO HIERÁRQUICA POR TEMAS E SUBTEMAS")
     print("=" * LARGURA_TELA)
     for idx, tema in enumerate(temas, start=1):
         print(f"  {idx}. {tema} ({resumo_temas[tema]} orientações)")
@@ -211,13 +211,46 @@ def fluxo_navegar_por_tema(base, temas, resumo_temas, modelo_atual):
         return
 
     tema_selecionado = temas[int(escolha_tema) - 1]
-    orientacoes_tema = busca_grafo.filtrar_por_tema(base, tema_selecionado)
+    hierarquia = busca_grafo.construir_hierarquia_temas(base)
+    subtemas_dict = hierarquia.get(tema_selecionado, {})
+    lista_subtemas = sorted(subtemas_dict.keys())
 
+    # Nível 2: Seleção de Subtema
     limpar_tela()
     print("=" * LARGURA_TELA)
-    print(f"TEMA: {tema_selecionado.upper()}")
+    print(f"TEMA: {tema_selecionado.upper()} — SUBTEMAS")
     print("=" * LARGURA_TELA)
-    for idx, reg in enumerate(orientacoes_tema, start=1):
+    for idx, sub in enumerate(lista_subtemas, start=1):
+        print(f"  {idx}. {sub} ({len(subtemas_dict[sub])} orientações)")
+    print(f"  {len(lista_subtemas) + 1}. Ver todas as orientações deste tema")
+    print("  0. Voltar ao menu principal")
+
+    escolha_sub = input("\nEscolha o número do subtema: ").strip()
+    if escolha_sub in ("", "0"):
+        return
+
+    if not escolha_sub.isdigit() or not (1 <= int(escolha_sub) <= len(lista_subtemas) + 1):
+        print("\n[ERRO] Opção de subtema inexistente. Retornando ao menu principal.")
+        pausar_retorno()
+        return
+
+    indice_sub = int(escolha_sub)
+    if indice_sub <= len(lista_subtemas):
+        subtema_selecionado = lista_subtemas[indice_sub - 1]
+        orientacoes_filtradas = busca_grafo.filtrar_por_tema(
+            base, tema_selecionado, subtema_selecionado
+        )
+        titulo_nivel = f"{tema_selecionado.upper()} > {subtema_selecionado.upper()}"
+    else:
+        orientacoes_filtradas = busca_grafo.filtrar_por_tema(base, tema_selecionado)
+        titulo_nivel = f"{tema_selecionado.upper()} > TODOS OS SUBTEMAS"
+
+    # Nível 3: Seleção da Orientação
+    limpar_tela()
+    print("=" * LARGURA_TELA)
+    print(f"HIERARQUIA: {titulo_nivel}")
+    print("=" * LARGURA_TELA)
+    for idx, reg in enumerate(orientacoes_filtradas, start=1):
         print(formatar_item_lista(f"{idx}. [ID #{reg['id']}] {reg['pergunta']}"))
     print("  0. Voltar ao menu principal")
 
@@ -225,13 +258,13 @@ def fluxo_navegar_por_tema(base, temas, resumo_temas, modelo_atual):
     if escolha_item in ("", "0"):
         return
 
-    if not escolha_item.isdigit() or not (1 <= int(escolha_item) <= len(orientacoes_tema)):
+    if not escolha_item.isdigit() or not (1 <= int(escolha_item) <= len(orientacoes_filtradas)):
         print("\n[ERRO] Opção inválida. Retornando ao menu principal.")
         pausar_retorno()
         return
 
     inicio = time.perf_counter()
-    registro_escolhido = orientacoes_tema[int(escolha_item) - 1]
+    registro_escolhido = orientacoes_filtradas[int(escolha_item) - 1]
     tempo_ms = (time.perf_counter() - inicio) * 1000
 
     exibir_e_navegar_orientacao(

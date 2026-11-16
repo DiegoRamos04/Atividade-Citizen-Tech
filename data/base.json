@@ -3,6 +3,7 @@
     {
       "id": 1,
       "tema": "Documentação e Benefícios",
+      "subtema": "Assistência Social e Identificação",
       "pergunta": "Como solicitar o Bilhete Único Especial para Pessoas com Deficiência em São Paulo?",
       "palavras_chave": [
         "bilhete único especial",
@@ -17,6 +18,7 @@
     {
       "id": 2,
       "tema": "Direitos em Serviços Públicos",
+      "subtema": "Atendimento e Educação",
       "pergunta": "Pessoas com deficiência têm direito a acompanhante em consultas médicas pelo SUS?",
       "palavras_chave": [
         "acompanhante",
@@ -32,6 +34,7 @@
     {
       "id": 3,
       "tema": "Mobilidade e Rotas",
+      "subtema": "Vias, Parques e Rotas Digitais",
       "pergunta": "A Estação da Luz possui acessibilidade para cadeirantes?",
       "palavras_chave": [
         "estação da luz",
@@ -47,6 +50,7 @@
     {
       "id": 4,
       "tema": "Documentação e Benefícios",
+      "subtema": "Isenções e Credenciais Veiculares",
       "pergunta": "Como funciona a isenção de IPVA para pessoas com deficiência?",
       "palavras_chave": [
         "ipva",
@@ -62,6 +66,7 @@
     {
       "id": 5,
       "tema": "Documentação e Benefícios",
+      "subtema": "Isenções e Credenciais Veiculares",
       "pergunta": "Como tirar a credencial de estacionamento para vagas exclusivas?",
       "palavras_chave": [
         "estacionamento",
@@ -77,6 +82,7 @@
     {
       "id": 6,
       "tema": "Documentação e Benefícios",
+      "subtema": "Assistência Social e Identificação",
       "pergunta": "O que é o BPC/LOAS e quem tem direito?",
       "palavras_chave": [
         "bpc",
@@ -93,6 +99,7 @@
     {
       "id": 7,
       "tema": "Documentação e Benefícios",
+      "subtema": "Isenções e Credenciais Veiculares",
       "pergunta": "Tenho direito a isenção de IPI na compra de carro zero?",
       "palavras_chave": [
         "ipi",
@@ -108,6 +115,7 @@
     {
       "id": 8,
       "tema": "Direitos em Serviços Públicos",
+      "subtema": "Atendimento e Educação",
       "pergunta": "Qual a porcentagem de cotas para PCD em concursos públicos?",
       "palavras_chave": [
         "concurso",
@@ -123,6 +131,7 @@
     {
       "id": 9,
       "tema": "Direitos em Serviços Públicos",
+      "subtema": "Atendimento e Educação",
       "pergunta": "Como funciona o atendimento prioritário em filas?",
       "palavras_chave": [
         "fila",
@@ -138,6 +147,7 @@
     {
       "id": 10,
       "tema": "Direitos em Serviços Públicos",
+      "subtema": "Cultura, Lazer e Emergências",
       "pergunta": "Pessoa com deficiência paga meia-entrada em shows e cinemas?",
       "palavras_chave": [
         "meia-entrada",
@@ -153,6 +163,7 @@
     {
       "id": 11,
       "tema": "Direitos em Serviços Públicos",
+      "subtema": "Atendimento e Educação",
       "pergunta": "Existe tempo adicional para PCD no ENEM e vestibulares?",
       "palavras_chave": [
         "enem",
@@ -168,6 +179,7 @@
     {
       "id": 12,
       "tema": "Mobilidade e Rotas",
+      "subtema": "Vias, Parques e Rotas Digitais",
       "pergunta": "A Avenida Paulista é acessível para pessoas com deficiência visual e cadeirantes?",
       "palavras_chave": [
         "avenida paulista",
@@ -183,6 +195,7 @@
     {
       "id": 13,
       "tema": "Mobilidade e Rotas",
+      "subtema": "Transporte Público Adaptado",
       "pergunta": "Como sei se o ônibus que vou pegar em São Paulo tem elevador?",
       "palavras_chave": [
         "ônibus",
@@ -198,6 +211,7 @@
     {
       "id": 14,
       "tema": "Mobilidade e Rotas",
+      "subtema": "Transporte Público Adaptado",
       "pergunta": "Existe táxi adaptado para cadeirantes em São Paulo?",
       "palavras_chave": [
         "táxi",
@@ -212,6 +226,7 @@
     {
       "id": 15,
       "tema": "Mobilidade e Rotas",
+      "subtema": "Vias, Parques e Rotas Digitais",
       "pergunta": "O Parque Ibirapuera tem rotas acessíveis?",
       "palavras_chave": [
         "parque ibirapuera",
@@ -227,6 +242,7 @@
     {
       "id": 16,
       "tema": "Documentação e Benefícios",
+      "subtema": "Assistência Social e Identificação",
       "pergunta": "Como funciona o BPC (LOAS) e qual a diferença para o auxílio por incapacidade?",
       "palavras_chave": [
         "bpc",
@@ -244,6 +260,7 @@
     {
       "id": 17,
       "tema": "Mobilidade e Rotas",
+      "subtema": "Transporte Público Adaptado",
       "pergunta": "O que é o Serviço Atende+ da SPTrans e como funciona o transporte porta a porta?",
       "palavras_chave": [
         "atende",
@@ -261,6 +278,7 @@
     {
       "id": 18,
       "tema": "Mobilidade e Rotas",
+      "subtema": "Transporte Público Adaptado",
       "pergunta": "O que fazer se o elevador ou plataforma da estação de metrô estiver quebrado ou em manutenção?",
       "palavras_chave": [
         "elevador",
@@ -279,6 +297,7 @@
     {
       "id": 19,
       "tema": "Direitos em Serviços Públicos",
+      "subtema": "Cultura, Lazer e Emergências",
       "pergunta": "Como agir em caso de recusa de embarque ou atendimento constrangedor no transporte público?",
       "palavras_chave": [
         "recusa",
@@ -297,6 +316,7 @@
     {
       "id": 20,
       "tema": "Direitos em Serviços Públicos",
+      "subtema": "Cultura, Lazer e Emergências",
       "pergunta": "Quais museus e centros culturais em São Paulo oferecem acessibilidade e gratuidade para PcD e acompanhante?",
       "palavras_chave": [
         "museu",
@@ -316,6 +336,7 @@
     {
       "id": 21,
       "tema": "Mobilidade e Rotas",
+      "subtema": "Vias, Parques e Rotas Digitais",
       "pergunta": "Como configurar rotas acessíveis no Google Maps e como funciona o Uber Assist?",
       "palavras_chave": [
         "google maps",
@@ -333,6 +354,7 @@
     {
       "id": 22,
       "tema": "Direitos em Serviços Públicos",
+      "subtema": "Cultura, Lazer e Emergências",
       "pergunta": "Onde buscar abrigo seguro durante tempestades ou alagamentos em São Paulo?",
       "palavras_chave": [
         "chuva",
@@ -351,6 +373,7 @@
     {
       "id": 23,
       "tema": "Documentação e Benefícios",
+      "subtema": "Assistência Social e Identificação",
       "pergunta": "Como solicitar a Carteira de Identificação da Pessoa com Transtorno do Espectro Autista (CiPTEA)?",
       "palavras_chave": [
         "ciptea",

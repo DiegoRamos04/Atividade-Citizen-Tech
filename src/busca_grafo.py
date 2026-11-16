@@ -181,28 +181,48 @@ def extrair_tokens_relevantes(texto):
 
 def construir_hierarquia_temas(base_dados):
     """
-    Representa os registros em uma estrutura hierárquica (dicionário de listas):
-    Tema Principal -> Lista de Subtemas/Orientações ordenadas por ID.
+    Representa os registros em uma estrutura hierárquica de 3 níveis
+    (dicionário aninhado de listas):
+      Nível 1: Tema Principal
+      Nível 2: Subtema (usa o campo 'subtema' do JSON ou 'Geral' como padrão)
+      Nível 3: Lista de Orientações ordenadas por ID
     """
     hierarquia = {}
     for registro in base_dados:
         tema = registro["tema"]
+        subtema = str(registro.get("subtema") or "Geral").strip()
+
         if tema not in hierarquia:
-            hierarquia[tema] = []
-        hierarquia[tema].append(registro)
+            hierarquia[tema] = {}
+        if subtema not in hierarquia[tema]:
+            hierarquia[tema][subtema] = []
+
+        hierarquia[tema][subtema].append(registro)
 
     for tema in hierarquia:
-        hierarquia[tema].sort(key=lambda item: int(item["id"]))
+        for subtema in hierarquia[tema]:
+            hierarquia[tema][subtema].sort(key=lambda item: int(item["id"]))
 
     return hierarquia
 
 
-def filtrar_por_tema(base_dados, tema_escolhido):
+def filtrar_por_tema(base_dados, tema_escolhido, subtema_escolhido=None):
     """
-    Retorna todas as orientações pertencentes a um tema selecionado no menu.
+    Retorna as orientações de um tema (e opcionalmente de um subtema específico)
+    a partir da hierarquia de 3 níveis, preservando compatibilidade com chamadas
+    que informam apenas o tema.
     """
     hierarquia = construir_hierarquia_temas(base_dados)
-    return hierarquia.get(tema_escolhido, [])
+    subtemas = hierarquia.get(tema_escolhido, {})
+
+    if subtema_escolhido is not None:
+        return subtemas.get(subtema_escolhido, [])
+
+    todas_orientacoes = []
+    for lista_registros in subtemas.values():
+        todas_orientacoes.extend(lista_registros)
+    todas_orientacoes.sort(key=lambda item: int(item["id"]))
+    return todas_orientacoes
 
 
 def construir_grafo_conhecimento(base_dados):
