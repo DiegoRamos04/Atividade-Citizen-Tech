@@ -139,7 +139,7 @@ def gerar_resposta_estruturada(registro, modelo="didatico", relacionados=None, p
         )
         linhas.append(
             formatar_paragrafo(
-                "Aviso: Informação orientativa; confirme regras atualizadas nos canais oficiais.",
+                "Aviso: Este assistente NÃO é canal oficial de governo; confirme regras atualizadas nos órgãos públicos.",
                 recuo_inicial="",
                 recuo_seguinte="",
             )
