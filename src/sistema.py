@@ -87,15 +87,18 @@ def exibir_e_navegar_orientacao(
             pausar_retorno()
             break
 
-        print("\nContinuidade da consulta (Grafo de Assuntos Relacionados):")
-        for idx, item in enumerate(relacionados, start=1):
-            reg_rel = item["registro"]
-            print(
-                formatar_item_lista(
-                    f"{idx}. [ID #{reg_rel['id']}] {reg_rel['pergunta']} ({item['motivo']})"
+        if modelo_atual == "didatico":
+            print("\nContinuidade da consulta (Grafo): digite 1, 2 ou 3 para explorar um assunto acima (0 = menu).")
+        else:
+            print("\nContinuidade da consulta (Grafo de Assuntos Relacionados):")
+            for idx, item in enumerate(relacionados, start=1):
+                reg_rel = item["registro"]
+                print(
+                    formatar_item_lista(
+                        f"{idx}. [ID #{reg_rel['id']}] {reg_rel['pergunta']} ({item['motivo']})"
+                    )
                 )
-            )
-        print("  0. Voltar ao menu principal")
+            print("  0. Voltar ao menu principal")
 
         if aviso_navegacao:
             print(f"\n{aviso_navegacao}")
