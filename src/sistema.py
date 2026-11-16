@@ -499,6 +499,7 @@ def fluxo_gerenciar_base(base, temas):
         print("Temas atuais:", ", ".join(temas))
 
         tema = input("\nTema (escolha um existente ou digite um novo): ").strip()
+        subtema = input("Subtema (ex.: Atendimento e Educação) [Enter = Geral]: ").strip() or "Geral"
         pergunta = input("Pergunta de referência: ").strip()
         kw_txt = input("Palavras-chave (separadas por vírgula): ").strip()
         orientacao = input("Orientação resumida: ").strip()
@@ -509,6 +510,7 @@ def fluxo_gerenciar_base(base, temas):
         novo_reg = {
             "id": proximo_id,
             "tema": tema,
+            "subtema": subtema,
             "pergunta": pergunta,
             "palavras_chave": palavras_chave,
             "orientacao": orientacao,
@@ -547,6 +549,7 @@ def fluxo_gerenciar_base(base, temas):
         print("(Pressione Enter em qualquer campo para manter o valor atual)\n")
 
         novo_tema = input(f"Tema [{reg['tema']}]: ").strip() or None
+        novo_subtema = input(f"Subtema [{reg.get('subtema', 'Geral')}]: ").strip() or None
         nova_pergunta = input("Nova pergunta (ou Enter para manter): ").strip() or None
         novas_kws_txt = input("Novas palavras-chave por vírgula (ou Enter para manter): ").strip()
         nova_orientacao = input("Nova orientação (ou Enter para manter): ").strip() or None
@@ -555,6 +558,7 @@ def fluxo_gerenciar_base(base, temas):
 
         atualizacoes = {
             "tema": novo_tema,
+            "subtema": novo_subtema,
             "pergunta": nova_pergunta,
             "orientacao": nova_orientacao,
             "fonte": nova_fonte,
@@ -610,7 +614,7 @@ def main():
         print("MENU PRINCIPAL")
         print("=" * LARGURA_TELA)
         print("  1. Fazer uma pergunta ou buscar por palavras-chave")
-        print("  2. Navegar por temas disponíveis")
+        print("  2. Navegar por temas e subtemas")
         print("  3. Consultar orientação diretamente por ID")
         print(f"  4. Alternar formato das respostas (Atual: {rotulo_formato})")
         print("  5. Comparar os 2 modelos de prompt em uma orientação")
