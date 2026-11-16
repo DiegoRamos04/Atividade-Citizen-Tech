@@ -218,8 +218,8 @@ def executar_bateria_testes(base_dados, casos=CASOS_DE_TESTE):
 
     casos_validos_prompt = []
     for caso in casos:
-        if caso["tipo_esperado"] is not None:
-            res_busca = busca_grafo.buscar_orientacoes(base_dados, caso["pergunta"])
+        if caso.get("id_esperado") is not None:
+            res_busca = busca_grafo.buscar_orientacoes(base_dados, caso["consulta"])
             if res_busca:
                 casos_validos_prompt.append({"registro": res_busca[0]["registro"]})
 
