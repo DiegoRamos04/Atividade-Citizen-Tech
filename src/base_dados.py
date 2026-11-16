@@ -17,10 +17,11 @@ CAMPOS_OBRIGATORIOS = (
 )
 
 
-def validar_registro(registro):
+def validar_registro(registro, ids_existentes=None):
     """
     Verifica se um dicionário de orientação possui todos os campos essenciais
-    preenchidos e com tipos válidos.
+    preenchidos, se o 'id' é um inteiro positivo único (quando ids_existentes
+    é informado) e se os tipos dos campos são válidos.
     """
     if not isinstance(registro, dict):
         return False
@@ -32,6 +33,15 @@ def validar_registro(registro):
         if valor is None or (isinstance(valor, str) and not valor.strip()):
             return False
 
+    # Valida tipo e valor do ID (em Python bool é subclasse de int, então excluímos bool)
+    id_valor = registro["id"]
+    if isinstance(id_valor, bool) or not isinstance(id_valor, int) or id_valor <= 0:
+        return False
+
+    # Verifica duplicidade de ID caso um conjunto de controle seja fornecido
+    if ids_existentes is not None and id_valor in ids_existentes:
+        return False
+
     # Garante que palavras_chave seja uma lista não vazia
     if not isinstance(registro["palavras_chave"], list) or len(registro["palavras_chave"]) == 0:
         return False
@@ -41,8 +51,8 @@ def validar_registro(registro):
 
 def carregar_base_conhecimento(caminho_arquivo=CAMINHO_PADRAO_BASE):
     """
-    Lê o arquivo JSON, valida os registros e trata erros de arquivo ausente,
-    vazio ou com estrutura inconsistente.
+    Lê o arquivo JSON, valida os registros (incluindo tipo e unicidade do ID)
+    e trata erros de arquivo ausente, vazio ou com estrutura inconsistente.
     """
     try:
         with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
@@ -58,11 +68,13 @@ def carregar_base_conhecimento(caminho_arquivo=CAMINHO_PADRAO_BASE):
             return []
 
         registros_validos = []
+        ids_vistos = set()
         for indice, item in enumerate(lista_bruta, start=1):
-            if validar_registro(item):
+            if validar_registro(item, ids_existentes=ids_vistos):
                 registros_validos.append(item)
+                ids_vistos.add(item["id"])
             else:
-                print(f"[AVISO] Registro na posição {indice} ignorado por estar incompleto ou inválido.")
+                print(f"[AVISO] Registro na posição {indice} ignorado por estar incompleto, inválido ou com ID duplicado.")
 
         return registros_validos
 
