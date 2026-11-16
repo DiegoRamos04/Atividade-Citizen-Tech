@@ -115,7 +115,7 @@ def exibir_e_navegar_orientacao(
             aviso_navegacao = "[AVISO] Opção inválida. Digite um número da lista ou 0 para voltar ao menu."
 
 
-def fluxo_consulta_pergunta(base, temas, modelo_atual):
+def fluxo_consulta_pergunta(base, temas, modelo_atual, indice_invertido=None):
     """
     Recebe uma pergunta ou palavras-chave em texto livre, valida a entrada,
     mede o tempo de consulta e trata correspondência única, ambiguidade ou
@@ -139,7 +139,9 @@ def fluxo_consulta_pergunta(base, temas, modelo_atual):
         pausar_retorno()
         return
 
-    resultados = busca_grafo.buscar_orientacoes(base, pergunta)
+    resultados = busca_grafo.buscar_orientacoes(
+        base, pergunta, indice_invertido=indice_invertido
+    )
     classificacao = busca_grafo.classificar_resultado_busca(resultados)
     tempo_ms = (time.perf_counter() - inicio) * 1000
 
@@ -588,6 +590,7 @@ def main():
 
     temas = base_dados.listar_temas(base)
     resumo_temas = base_dados.contar_por_tema(base)
+    indice_invertido = busca_grafo.construir_indice_invertido(base)
     modelo_atual = "didatico"
     primeira_exibicao = True
 
@@ -632,7 +635,7 @@ def main():
 
         try:
             if opcao == "1":
-                fluxo_consulta_pergunta(base, temas, modelo_atual)
+                fluxo_consulta_pergunta(base, temas, modelo_atual, indice_invertido=indice_invertido)
             elif opcao == "2":
                 fluxo_navegar_por_tema(base, temas, resumo_temas, modelo_atual)
             elif opcao == "3":
@@ -652,6 +655,7 @@ def main():
                 fluxo_gerenciar_base(base, temas)
                 temas = base_dados.listar_temas(base)
                 resumo_temas = base_dados.contar_por_tema(base)
+                indice_invertido = busca_grafo.construir_indice_invertido(base)
             elif opcao == "0":
                 limpar_tela()
                 print("Encerrando o IncluiSP | Citizen Assist AI. Obrigado por utilizar!")

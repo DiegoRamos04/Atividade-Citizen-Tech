@@ -149,6 +149,88 @@ ARESTAS_SEMANTICAS = {
     ],
 }
 
+# Mapeamento de sinônimos e variações morfológicas comuns no contexto cidadão (PcD)
+SINONIMOS_E_RADICAIS = {
+    "pcd": {"deficiente", "deficiencia"},
+    "deficiente": {"pcd", "deficiencia"},
+    "deficiencia": {"pcd", "deficiente"},
+    "cadeirante": {"cadeira", "rodas", "mobilidade"},
+    "carro": {"veiculo", "automovel"},
+    "veiculo": {"carro", "automovel"},
+    "automovel": {"carro", "veiculo"},
+    "gratis": {"gratuidade", "gratuito", "gratuita", "isencao"},
+    "gratuito": {"gratuidade", "gratis", "gratuita", "isencao"},
+    "gratuita": {"gratuidade", "gratis", "gratuito", "isencao"},
+    "gratuidade": {"gratis", "gratuito", "gratuita", "isencao"},
+    "onibus": {"coletivo", "sptrans", "transporte"},
+    "metro": {"estacao", "trem", "cptm"},
+    "hospital": {"sus", "medico", "medica", "saude", "consulta"},
+    "sus": {"hospital", "saude", "consulta"},
+    "autista": {"autismo", "tea", "ciptea"},
+    "autismo": {"autista", "tea", "ciptea"},
+    "tea": {"autista", "autismo", "ciptea"},
+    "chuva": {"tempestade", "alagamento", "enchente"},
+    "alagamento": {"chuva", "tempestade", "enchente"},
+}
+
+
+def radicalizar_token(token):
+    """
+    Stemming leve para português: reduz flexões simples de plural e gênero
+    em palavras com 5+ caracteres para ampliar a cobertura semântica.
+    """
+    if len(token) >= 5:
+        if token.endswith("oes"):
+            return token[:-3] + "ao"
+        if token.endswith("ais"):
+            return token[:-3] + "al"
+        if token.endswith("eis"):
+            return token[:-3] + "el"
+        if token.endswith("s") and not token.endswith(("ss", "us", "is")):
+            return token[:-1]
+    return token
+
+
+def expandir_tokens_semanticos(tokens):
+    """
+    Expande um conjunto de tokens com seus radicais leves e sinônimos cadastrados.
+    """
+    expandidos = set()
+    for token in tokens:
+        radical = radicalizar_token(token)
+        expandidos.add(token)
+        expandidos.add(radical)
+        for chave in (token, radical):
+            if chave in SINONIMOS_E_RADICAIS:
+                expandidos.update(SINONIMOS_E_RADICAIS[chave])
+    return expandidos
+
+
+def construir_indice_invertido(base_dados):
+    """
+    Constrói um Índice Invertido (dict: token_expandido -> set de IDs de registros)
+    a partir dos campos textuais da base, reduzindo o universo de candidatos
+    antes do ranqueamento detalhado.
+    """
+    indice = {}
+    for registro in base_dados:
+        reg_id = int(registro["id"])
+        texto_indexavel = " ".join([
+            " ".join(registro["palavras_chave"]),
+            registro["pergunta"],
+            registro["tema"],
+            registro.get("subtema", ""),
+            registro["orientacao"],
+        ])
+        tokens_base = extrair_tokens_relevantes(texto_indexavel)
+        tokens_indexados = expandir_tokens_semanticos(tokens_base)
+
+        for token in tokens_indexados:
+            if token not in indice:
+                indice[token] = set()
+            indice[token].add(reg_id)
+
+    return indice
 
 def normalizar_texto(texto):
     """
@@ -344,27 +426,41 @@ def encontrar_caminho_assuntos(base_dados, id_origem, id_destino):
     return []
 
 
-def buscar_orientacoes(base_dados, consulta, pontuacao_minima=4):
+def buscar_orientacoes(base_dados, consulta, pontuacao_minima=4, indice_invertido=None):
     """
-    Estratégia de Busca Ranqueada por Relevância:
-      - +10 pontos (+4 por termo extra) para expressão exata em 'palavras_chave';
-      - +4 pontos por token relevante coincidente em 'palavras_chave';
-      - +2 pontos por token relevante coincidente no enunciado da 'pergunta';
-      - +1 ponto se houver coincidência no 'tema';
-      - +1 ponto (máx. 2) por coincidência no texto da 'orientacao'.
-
-    Quando existem várias correspondências, os resultados são ordenados de forma
-    decrescente pela pontuação (usando o ID como desempate determinístico).
+    Estratégia de Busca Ranqueada com Índice Invertido e Expansão Semântica:
+      1. Consulta o índice invertido (dict token -> IDs) para recuperar apenas
+         os registros candidatos que possuem interseção lexical ou semântica;
+      2. Pontua os candidatos por peso de campo:
+         - +10 pontos (+4 por termo extra) para expressão exata em 'palavras_chave';
+         - +4 pontos por token relevante coincidente em 'palavras_chave';
+         - +2 pontos por token relevante coincidente na 'pergunta' (ou via sinônimo);
+         - +1 ponto se houver coincidência no 'tema';
+         - +1 ponto (máx. 2) por coincidência no texto da 'orientacao'.
     """
     consulta_norm = normalizar_texto(consulta)
-    tokens_consulta = set(extrair_tokens_relevantes(consulta))
+    tokens_diretos = set(extrair_tokens_relevantes(consulta))
 
-    if not consulta_norm or not tokens_consulta:
+    if not consulta_norm or not tokens_diretos:
+        return []
+
+    tokens_expandidos = expandir_tokens_semanticos(tokens_diretos)
+    indice = indice_invertido if indice_invertido is not None else construir_indice_invertido(base_dados)
+
+    # Recupera apenas os IDs candidatos via Índice Invertido (O(K))
+    ids_candidatos = set()
+    for token in tokens_expandidos:
+        ids_candidatos.update(indice.get(token, set()))
+
+    if not ids_candidatos:
         return []
 
     resultados = []
 
     for registro in base_dados:
+        if int(registro["id"]) not in ids_candidatos:
+            continue
+
         pontuacao = 0
         termos_encontrados = set()
 
@@ -380,26 +476,42 @@ def buscar_orientacoes(base_dados, consulta, pontuacao_minima=4):
                 termos_encontrados.add(kw)
             else:
                 tokens_kw = set(extrair_tokens_relevantes(kw_norm))
-                coincidencias_kw = tokens_consulta.intersection(tokens_kw)
-                if coincidencias_kw:
-                    pontuacao += len(coincidencias_kw) * 4
-                    termos_encontrados.update(coincidencias_kw)
+                coincidencias_diretas = tokens_diretos.intersection(tokens_kw)
+                if coincidencias_diretas:
+                    pontuacao += len(coincidencias_diretas) * 4
+                    termos_encontrados.update(coincidencias_diretas)
+                else:
+                    coincidencias_sem = tokens_expandidos.intersection(
+                        expandir_tokens_semanticos(tokens_kw)
+                    )
+                    if coincidencias_sem:
+                        pontuacao += len(coincidencias_sem) * 3
+                        termos_encontrados.update(coincidencias_sem)
 
         # 2. Avaliação dos termos presentes na pergunta de referência
         tokens_pergunta = set(extrair_tokens_relevantes(registro["pergunta"]))
-        coincidencias_pergunta = tokens_consulta.intersection(tokens_pergunta)
+        coincidencias_pergunta = tokens_diretos.intersection(tokens_pergunta)
         if coincidencias_pergunta:
             pontuacao += len(coincidencias_pergunta) * 2
             termos_encontrados.update(coincidencias_pergunta)
+        else:
+            coincidencias_perg_sem = tokens_expandidos.intersection(
+                expandir_tokens_semanticos(tokens_pergunta)
+            )
+            if coincidencias_perg_sem:
+                pontuacao += len(coincidencias_perg_sem) * 2
+                termos_encontrados.update(coincidencias_perg_sem)
 
         # 3. Avaliação do tema
         tokens_tema = set(extrair_tokens_relevantes(registro["tema"]))
-        if tokens_consulta.intersection(tokens_tema):
+        if tokens_expandidos.intersection(expandir_tokens_semanticos(tokens_tema)):
             pontuacao += 1
 
         # 4. Avaliação leve no corpo da orientação para desempate
         tokens_orientacao = set(extrair_tokens_relevantes(registro["orientacao"]))
-        coincidencias_orientacao = tokens_consulta.intersection(tokens_orientacao)
+        coincidencias_orientacao = tokens_expandidos.intersection(
+            expandir_tokens_semanticos(tokens_orientacao)
+        )
         if coincidencias_orientacao:
             pontuacao += min(len(coincidencias_orientacao), 2)
 

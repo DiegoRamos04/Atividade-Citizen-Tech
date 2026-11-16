@@ -137,7 +137,7 @@ CASOS_DE_TESTE = [
 ]
 
 
-def executar_caso_teste(base_dados, caso):
+def executar_caso_teste(base_dados, caso, indice_invertido=None):
     """
     Executa uma única consulta da bateria de testes, mede o tempo de processamento
     em milissegundos e verifica se o resultado obtido corresponde ao esperado.
@@ -151,7 +151,7 @@ def executar_caso_teste(base_dados, caso):
         id_obtido = None
         descricao_obtida = "Entrada vazia/inválida bloqueada com sucesso"
     else:
-        resultados = buscar_orientacoes(base_dados, consulta)
+        resultados = buscar_orientacoes(base_dados, consulta, indice_invertido=indice_invertido)
         comportamento_obtido = classificar_resultado_busca(resultados)
 
         if comportamento_obtido == "unico":
@@ -245,9 +245,10 @@ def executar_bateria_testes(base_dados, casos=CASOS_DE_TESTE):
     """
     resultados_detalhados = []
     por_categoria = {}
+    indice_invertido = busca_grafo.construir_indice_invertido(base_dados)
 
     for caso in casos:
-        resultado = executar_caso_teste(base_dados, caso)
+        resultado = executar_caso_teste(base_dados, caso, indice_invertido=indice_invertido)
         resultados_detalhados.append(resultado)
 
         cat = resultado["categoria"]
@@ -270,7 +271,7 @@ def executar_bateria_testes(base_dados, casos=CASOS_DE_TESTE):
     casos_validos_prompt = []
     for caso in casos:
         if caso.get("id_esperado") is not None:
-            res_busca = busca_grafo.buscar_orientacoes(base_dados, caso["consulta"])
+            res_busca = busca_grafo.buscar_orientacoes(base_dados, caso["consulta"], indice_invertido=indice_invertido)
             if res_busca:
                 casos_validos_prompt.append({"registro": res_busca[0]["registro"]})
 
