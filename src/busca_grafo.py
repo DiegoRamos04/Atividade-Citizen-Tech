@@ -430,3 +430,49 @@ def classificar_resultado_busca(resultados, margem_ambiguidade=2):
             return "ambiguo"
 
     return "unico"
+
+def buscar_simples_palavra_chave(base_dados, consulta):
+    """
+    Algoritmo baseline (Busca Simples / Booleana por Palavra-Chave):
+      - Percorre linearmente os registros (O(n)) sem pesos semânticos nem stopwords;
+      - Retorna o primeiro ou todos os registros que contenham algum termo da consulta
+        nas 'palavras_chave' ou na 'pergunta', sem ranqueamento por relevância.
+    Utilizado na bateria de avaliação para comparação de desempenho com a busca ranqueada.
+    """
+    consulta_norm = normalizar_texto(consulta)
+    if not consulta_norm:
+        return []
+
+    termos_brutos = [t for t in consulta_norm.split() if len(t) > 1]
+    if not termos_brutos:
+        return []
+
+    encontrados = []
+    for registro in base_dados:
+        texto_kws = normalizar_texto(" ".join(registro["palavras_chave"]))
+        texto_perg = normalizar_texto(registro["pergunta"])
+        campo_busca = f"{texto_kws} {texto_perg}"
+
+        coincidencias = [t for t in termos_brutos if re.search(rf"\b{re.escape(t)}\b", campo_busca)]
+        if coincidencias:
+            encontrados.append({
+                "registro": registro,
+                "pontuacao": len(coincidencias),
+                "termos_encontrados": sorted(set(coincidencias)),
+            })
+
+    return encontrados
+
+
+def classificar_resultado_simples(resultados):
+    """
+    Classifica o retorno da busca simples (sem margem de ranqueamento):
+      - 0 registros -> 'sem_correspondencia'
+      - 1 registro  -> 'unico'
+      - 2+ registros -> 'ambiguo' (qualquer empate/coincidência múltipla gera ambiguidade)
+    """
+    if not resultados:
+        return "sem_correspondencia"
+    if len(resultados) == 1:
+        return "unico"
+    return "ambiguo"

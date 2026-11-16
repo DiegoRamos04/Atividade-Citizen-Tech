@@ -1,6 +1,11 @@
 import time
 
-from busca_grafo import buscar_orientacoes, classificar_resultado_busca
+from busca_grafo import (
+    buscar_orientacoes,
+    buscar_simples_palavra_chave,
+    classificar_resultado_busca,
+    classificar_resultado_simples,
+)
 import busca_grafo
 from prompts import validar_entrada_consulta
 import prompts
@@ -183,6 +188,52 @@ def executar_caso_teste(base_dados, caso):
         "tempo_ms": tempo_ms,
     }
 
+def comparar_algoritmos_busca(base_dados, casos=CASOS_DE_TESTE):
+    """
+    Executa os mesmos casos de teste no algoritmo baseline (Busca Simples por
+    palavra-chave sem pesos) e compara os indicadores com a Busca Ranqueada.
+    """
+    acertos_simples = 0
+    tempos_simples = []
+    divergencias = []
+
+    for caso in casos:
+        consulta = caso["consulta"]
+        inicio = time.perf_counter()
+
+        eh_valida, _ = validar_entrada_consulta(consulta)
+        if not eh_valida:
+            comp_obtido = "entrada_invalida"
+            id_obtido = None
+        else:
+            res_simples = buscar_simples_palavra_chave(base_dados, consulta)
+            comp_obtido = classificar_resultado_simples(res_simples)
+            id_obtido = int(res_simples[0]["registro"]["id"]) if comp_obtido == "unico" else None
+
+        tempo_ms = (time.perf_counter() - inicio) * 1000
+        tempos_simples.append(tempo_ms)
+
+        if caso["comportamento_esperado"] == "unico":
+            acertou = comp_obtido == "unico" and id_obtido == caso["id_esperado"]
+        else:
+            acertou = comp_obtido == caso["comportamento_esperado"]
+
+        if acertou:
+            acertos_simples += 1
+        else:
+            divergencias.append(f"{caso['id_teste']} ({comp_obtido})")
+
+    total = len(casos)
+    taxa_simples = (acertos_simples / total * 100) if total > 0 else 0.0
+    tempo_medio_simples = sum(tempos_simples) / total if total > 0 else 0.0
+
+    return {
+        "total_testes": total,
+        "acertos_simples": acertos_simples,
+        "taxa_simples": taxa_simples,
+        "tempo_medio_simples_ms": tempo_medio_simples,
+        "divergencias_simples": divergencias,
+    }
 
 def executar_bateria_testes(base_dados, casos=CASOS_DE_TESTE):
     """
@@ -227,6 +278,7 @@ def executar_bateria_testes(base_dados, casos=CASOS_DE_TESTE):
         casos_validos_prompt,
         lambda reg_id: busca_grafo.obter_relacionados(base_dados, reg_id, limite=3),
     )
+    comparacao_algoritmos = comparar_algoritmos_busca(base_dados, casos)
 
     return {
         "resultados": resultados_detalhados,
@@ -239,6 +291,7 @@ def executar_bateria_testes(base_dados, casos=CASOS_DE_TESTE):
         "tempo_max_ms": tempo_max_ms,
         "por_categoria": por_categoria,
         "comparacao_prompts": comparacao_prompts,
+        "comparacao_algoritmos": comparacao_algoritmos,
     }
 
 
@@ -278,6 +331,33 @@ def formatar_relatorio_avaliacao(relatorio):
         linhas.append(
             f"  • {categoria:<30}: {dados['acertos']}/{dados['total']} ({taxa_cat:.1f}%)"
         )
+
+    if relatorio.get("comparacao_algoritmos"):
+        comp = relatorio["comparacao_algoritmos"]
+        linhas.append("")
+        linhas.append("-" * 76)
+        linhas.append(f"COMPARAÇÃO DE ALGORITMOS DE BUSCA (MESMOS {comp['total_testes']} TESTES)")
+        linhas.append("-" * 76)
+        linhas.append(f"{'Algoritmo':<36} | {'Acertos':<11} | {'Taxa':<8} | {'Tempo Médio'}")
+        linhas.append("-" * 76)
+        linhas.append(
+            f"{'1. Busca Simples (Palavra-Chave)':<36} | "
+            f"{comp['acertos_simples']:>2}/{comp['total_testes']:<8} | "
+            f"{comp['taxa_simples']:>6.1f}% | "
+            f"{comp['tempo_medio_simples_ms']:>7.3f} ms"
+        )
+        linhas.append(
+            f"{'2. Busca Ranqueada (Pesos+Stopwords)':<36} | "
+            f"{relatorio['total_acertos']:>2}/{relatorio['total_testes']:<8} | "
+            f"{relatorio['taxa_acerto']:>6.1f}% | "
+            f"{relatorio['tempo_medio_ms']:>7.3f} ms"
+        )
+        linhas.append("-" * 76)
+        if comp["divergencias_simples"]:
+            linhas.append(
+                f"  • Falhas na Busca Simples: {', '.join(comp['divergencias_simples'])} "
+                "(ruído por palavras comuns e empates sem peso)."
+            )
 
     if relatorio.get("comparacao_prompts"):
         linhas.append("")
