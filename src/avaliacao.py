@@ -1,5 +1,6 @@
+import csv
+from pathlib import Path
 import time
-
 from busca_grafo import (
     buscar_orientacoes,
     buscar_simples_palavra_chave,
@@ -133,6 +134,35 @@ CASOS_DE_TESTE = [
         "comportamento_esperado": "sem_correspondencia",
         "id_esperado": None,
         "descricao_esperada": "Informar ausência na base e sugerir temas disponíveis",
+    },
+    # Cenários de Estresse Lexical (Erros de Digitação, Gírias e Frases Longas)
+    {
+        "id_teste": "T16",
+        "categoria": "Estresse (Erro de Digitação)",
+        "consulta": "Como pedir isensao de ipva?",
+        "comportamento_esperado": "unico",
+        "id_esperado": 4,
+        "descricao_esperada": "Identificar isenção de IPVA mesmo com erro ortográfico (ID #4)",
+    },
+    {
+        "id_teste": "T17",
+        "categoria": "Estresse (Gíria Regional)",
+        "consulta": "Onde consigo passe livre de busao em SP?",
+        "comportamento_esperado": "unico",
+        "id_esperado": 1,
+        "descricao_esperada": "Identificar Bilhete Único Especial a partir de gíria (ID #1)",
+    },
+    {
+        "id_teste": "T18",
+        "categoria": "Estresse (Frase Longa)",
+        "consulta": (
+            "Oi bom dia tudo bem eu queria saber se por acaso existe algum lugar "
+            "na cidade onde eu possa pedir aquela carteirinha para estacionar na "
+            "vaga azul de deficiente"
+        ),
+        "comportamento_esperado": "unico",
+        "id_esperado": 5,
+        "descricao_esperada": "Filtrar ruído coloquial e recuperar Credencial Defis (ID #5)",
     },
 ]
 
@@ -366,3 +396,43 @@ def formatar_relatorio_avaliacao(relatorio):
 
     linhas.append("=" * 76)
     return "\n".join(linhas)
+
+def salvar_resultados_testes(relatorio, diretorio_saida=None):
+    """
+    Persiste o relatório completo dos testes em docs/resultados_testes.txt
+    e a tabela estruturada em docs/resultados_testes.csv (esperado, obtido,
+    acerto/erro e tempo em ms), atendendo à evidência documental do edital.
+    """
+    raiz_projeto = Path(__file__).resolve().parent.parent
+    pasta_docs = Path(diretorio_saida) if diretorio_saida else raiz_projeto / "docs"
+    pasta_docs.mkdir(parents=True, exist_ok=True)
+
+    caminho_txt = pasta_docs / "resultados_testes.txt"
+    caminho_csv = pasta_docs / "resultados_testes.csv"
+
+    texto_relatorio = formatar_relatorio_avaliacao(relatorio)
+    caminho_txt.write_text(texto_relatorio + "\n", encoding="utf-8")
+
+    with caminho_csv.open("w", encoding="utf-8-sig", newline="") as arquivo_csv:
+        escritor = csv.writer(arquivo_csv, delimiter=";")
+        escritor.writerow([
+            "id_teste",
+            "categoria",
+            "consulta",
+            "resposta_esperada",
+            "resposta_obtida",
+            "status",
+            "tempo_ms",
+        ])
+        for item in relatorio["resultados"]:
+            escritor.writerow([
+                item["id_teste"],
+                item["categoria"],
+                item["consulta"],
+                item["descricao_esperada"],
+                item["descricao_obtida"],
+                "ACERTO" if item["acertou"] else "ERRO",
+                f"{item['tempo_ms']:.3f}",
+            ])
+
+    return caminho_txt, caminho_csv

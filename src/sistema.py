@@ -622,7 +622,7 @@ def main():
         print(f"  4. Alternar formato das respostas (Atual: {rotulo_formato})")
         print("  5. Comparar os 2 modelos de prompt em uma orientação")
         print("  6. Explorar conexão entre assuntos no grafo (Dijkstra)")
-        print("  7. Executar bateria de testes e gerar indicadores (15 testes)")
+        print("  7. Executar bateria de testes e gerar indicadores (18 testes)")
         print("  8. Gerenciar base de conhecimento (Adicionar ou corrigir)")
         print("  0. Sair")
         print("-" * LARGURA_TELA)
@@ -649,7 +649,11 @@ def main():
             elif opcao == "7":
                 limpar_tela()
                 relatorio = avaliacao.executar_bateria_testes(base)
+                caminho_txt, caminho_csv = avaliacao.salvar_resultados_testes(relatorio)
                 print(avaliacao.formatar_relatorio_avaliacao(relatorio))
+                print(f"\n[ARQUIVOS GERADOS] Resultados salvos em:")
+                print(f"  • {caminho_txt}")
+                print(f"  • {caminho_csv}")
                 pausar_retorno()
             elif opcao == "8":
                 fluxo_gerenciar_base(base, temas)
