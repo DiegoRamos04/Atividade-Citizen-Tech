@@ -413,27 +413,42 @@ Em alguns sistemas o comando é `python3`. Os caminhos dos arquivos são resolvi
 
 ### Estrutura do repositório
 
-```
+```text
 .
+├── .gitignore
 ├── README.md
 ├── data/
 │   └── base.json                 # base de conhecimento (23 orientações)
 ├── docs/
-│   ├── relatorio.pdf             # relatório técnico
 │   ├── link_video.txt            # link do vídeo no YouTube
-│   ├── uso_ia.md                 # uso de IA e validação crítica
+│   ├── relatorio.pdf             # relatório técnico
 │   ├── resultados_testes.csv     # registro dos testes (gerado pela opção 7)
-│   └── resultados_testes.txt     # relatório dos testes (gerado pela opção 7)
+│   ├── resultados_testes.txt     # relatório dos testes (gerado pela opção 7)
+│   └── uso_ia.md                 # uso de IA e validação crítica
 ├── incluisp/                     # versão web complementar (opcional)
+│   ├── data/
+│   │   ├── base.json
+│   │   └── transit.json
+│   ├── public/
+│   │   ├── photos/
+│   │   ├── app.js
+│   │   ├── index.html
+│   │   └── style.css
+│   ├── test/
+│   │   └── incluisp.test.mjs
+│   ├── .gitignore
+│   ├── README.md
+│   ├── mobility.mjs
+│   ├── package-lock.json
+│   ├── package.json
+│   └── server.mjs
 └── src/
-    ├── sistema.py                # menu, fluxos de consulta e navegação
+    ├── avaliacao.py              # testes, indicadores e comparações
     ├── base_dados.py             # leitura, validação e manutenção da base
     ├── busca_grafo.py            # busca, hierarquia, grafo e Dijkstra
     ├── prompts.py                # modelos de prompt e mensagens
-    └── avaliacao.py              # testes, indicadores e comparações
+    └── sistema.py                # menu, fluxos de consulta e navegação
 ```
-
----
 
 ## 7. Exemplos de perguntas e respostas
 
