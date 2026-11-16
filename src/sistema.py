@@ -486,4 +486,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (KeyboardInterrupt, EOFError):
+        print("\n\nEncerrando o IncluiSP | Citizen Assist AI. Até logo!")
