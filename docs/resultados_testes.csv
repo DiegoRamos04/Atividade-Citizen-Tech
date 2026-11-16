@@ -1,0 +1,19 @@
+﻿id_teste;categoria;consulta;resposta_esperada;resposta_obtida;status;tempo_ms
+T01;Pergunta Direta;Como solicitar o Bilhete Único Especial para Pessoas com Deficiência?;Orientação sobre Bilhete Único Especial da SPTrans (ID #1);ID #1: Como solicitar o Bilhete Único Especial para Pes...;ACERTO;6.500
+T02;Pergunta Direta;A Estação da Luz tem elevador para cadeirante?;Acessibilidade e elevadores da Estação da Luz (ID #3);ID #3: A Estação da Luz possui acessibilidade para cade...;ACERTO;2.378
+T03;Pergunta Direta;Como pedir isenção de IPVA em São Paulo?;Isenção de IPVA via sistema SIVEI/Fazenda SP (ID #4);ID #4: Como funciona a isenção de IPVA para pessoas com...;ACERTO;4.898
+T04;Pergunta Direta;Tenho direito a acompanhante em consulta pelo SUS?;Direito a acompanhante garantido pela LBI no SUS (ID #2);ID #2: Pessoas com deficiência têm direito a acompanhan...;ACERTO;2.125
+T05;Pergunta Direta;Qual o percentual de cotas para PCD em concursos públicos?;Reserva de vagas de 5% a 20% em concursos (ID #8);ID #8: Qual a porcentagem de cotas para PCD em concurso...;ACERTO;2.983
+T06;Reformulação;Quero usar aquela van adaptada porta a porta da SPTrans;Funcionamento e cadastro do Serviço Atende+ (ID #17);ID #17: O que é o Serviço Atende+ da SPTrans e como func...;ACERTO;0.912
+T07;Reformulação;Cheguei na estação de metrô e o elevador está quebrado;Procedimento para elevador inoperante e telefone 0800 (ID #18);ID #18: O que fazer se o elevador ou plataforma da estaç...;ACERTO;0.734
+T08;Reformulação;O motorista do ônibus recusou meu embarque e fui constrangido;Como agir e denunciar recusa de embarque no 156 (ID #19);ID #19: Como agir em caso de recusa de embarque ou atend...;ACERTO;0.897
+T09;Reformulação;Quais museus em SP dão gratuidade para pessoa com deficiência e acompanhante?;Acessibilidade e gratuidade em museus de SP (ID #20);ID #20: Quais museus e centros culturais em São Paulo of...;ACERTO;1.808
+T10;Reformulação;Vou fazer o ENEM e preciso de tempo extra na prova;Direito a 60 minutos adicionais no ENEM/vestibulares (ID #11);ID #11: Existe tempo adicional para PCD no ENEM e vestib...;ACERTO;0.608
+T11;Limitação (Entrada Vazia);(vazio);Bloquear entrada em branco e orientar o usuário;Entrada vazia/inválida bloqueada com sucesso;ACERTO;0.001
+T12;Limitação (Ambiguidade);bpc;Detectar empate entre ID #6 (BPC geral) e ID #16 (BPC vs Auxílio);Ambiguidade detectada entre IDs [6, 16];ACERTO;0.243
+T13;Limitação (Ambiguidade);elevador;Detectar múltiplas correspondências (Estação Luz, Ônibus, Manutenção);Ambiguidade detectada entre IDs [13, 18, 3];ACERTO;0.568
+T14;Limitação (Fora do Escopo);Como tirar passaporte na Polícia Federal?;Informar ausência na base sem inventar resposta;Sem correspondência na base (limite informado);ACERTO;0.303
+T15;Limitação (Fora do Escopo);Como renovar a CNH vencida no Poupatempo?;Informar ausência na base e sugerir temas disponíveis;Sem correspondência na base (limite informado);ACERTO;0.016
+T16;Estresse (Erro de Digitação);Como pedir isensao de ipva?;Identificar isenção de IPVA mesmo com erro ortográfico (ID #4);ID #4: Como funciona a isenção de IPVA para pessoas com...;ACERTO;0.109
+T17;Estresse (Gíria Regional);Onde consigo passe livre de busao em SP?;Identificar Bilhete Único Especial a partir de gíria (ID #1);ID #1: Como solicitar o Bilhete Único Especial para Pes...;ACERTO;0.542
+T18;Estresse (Frase Longa);Oi bom dia tudo bem eu queria saber se por acaso existe algum lugar na cidade onde eu possa pedir aquela carteirinha para estacionar na vaga azul de deficiente;Filtrar ruído coloquial e recuperar Credencial Defis (ID #5);ID #8: Qual a porcentagem de cotas para PCD em concurso...;ERRO;3.598
