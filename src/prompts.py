@@ -21,12 +21,12 @@ MODELOS_PROMPT = {
         ),
         "formato_saida": "Bloco compacto: [Tema] -> [Orientação] -> [Fonte/Data] -> [Aviso curto].",
     },
-        "didatico": {
-            "codigo": "didatico",
-            "nome": "Modelo 2 — Guia Estruturado e Acessível (Cadeia de Instrução)",
-            "papel_assistente": (
-                "Assistente cidadão acessível do IncluiSP, especializado em traduzir direitos, "
-                "benefícios e rotas de acessibilidade em etapas claras, inclusivas e seguras."
+    "didatico": {
+        "codigo": "didatico",
+        "nome": "Modelo 2 — Guia Estruturado e Acessível (Cadeia de Instrução)",
+        "papel_assistente": (
+            "Assistente cidadão acessível do IncluiSP, especializado em traduzir direitos, "
+            "benefícios e rotas de acessibilidade em etapas claras, inclusivas e seguras."
         ),
         "regras_instrucao": (
             "1. Contextualizar o tema e a pergunta correspondida para confirmar o assunto.",
