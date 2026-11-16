@@ -1,52 +1,52 @@
 ============================================================================
 RELATÓRIO DE AVALIAÇÃO E INDICADORES DE DESEMPENHO — IncluiSP
 ============================================================================
-[T01] ACERTO |  6.500 ms | Pergunta Direta
+[T01] ACERTO | 17.610 ms | Pergunta Direta
       Pergunta : Como solicitar o Bilhete Único Especial para Pessoas com Deficiência?
       Esperado : Orientação sobre Bilhete Único Especial da SPTrans (ID #1)
       Obtido   : ID #1: Como solicitar o Bilhete Único Especial para Pes...
 ----------------------------------------------------------------------------
-[T02] ACERTO |  2.378 ms | Pergunta Direta
+[T02] ACERTO | 15.053 ms | Pergunta Direta
       Pergunta : A Estação da Luz tem elevador para cadeirante?
       Esperado : Acessibilidade e elevadores da Estação da Luz (ID #3)
       Obtido   : ID #3: A Estação da Luz possui acessibilidade para cade...
 ----------------------------------------------------------------------------
-[T03] ACERTO |  4.898 ms | Pergunta Direta
+[T03] ACERTO |  7.414 ms | Pergunta Direta
       Pergunta : Como pedir isenção de IPVA em São Paulo?
       Esperado : Isenção de IPVA via sistema SIVEI/Fazenda SP (ID #4)
       Obtido   : ID #4: Como funciona a isenção de IPVA para pessoas com...
 ----------------------------------------------------------------------------
-[T04] ACERTO |  2.125 ms | Pergunta Direta
+[T04] ACERTO |  2.201 ms | Pergunta Direta
       Pergunta : Tenho direito a acompanhante em consulta pelo SUS?
       Esperado : Direito a acompanhante garantido pela LBI no SUS (ID #2)
       Obtido   : ID #2: Pessoas com deficiência têm direito a acompanhan...
 ----------------------------------------------------------------------------
-[T05] ACERTO |  2.983 ms | Pergunta Direta
+[T05] ACERTO |  2.409 ms | Pergunta Direta
       Pergunta : Qual o percentual de cotas para PCD em concursos públicos?
       Esperado : Reserva de vagas de 5% a 20% em concursos (ID #8)
       Obtido   : ID #8: Qual a porcentagem de cotas para PCD em concurso...
 ----------------------------------------------------------------------------
-[T06] ACERTO |  0.912 ms | Reformulação
+[T06] ACERTO |  0.763 ms | Reformulação
       Pergunta : Quero usar aquela van adaptada porta a porta da SPTrans
       Esperado : Funcionamento e cadastro do Serviço Atende+ (ID #17)
       Obtido   : ID #17: O que é o Serviço Atende+ da SPTrans e como func...
 ----------------------------------------------------------------------------
-[T07] ACERTO |  0.734 ms | Reformulação
+[T07] ACERTO |  0.736 ms | Reformulação
       Pergunta : Cheguei na estação de metrô e o elevador está quebrado
       Esperado : Procedimento para elevador inoperante e telefone 0800 (ID #18)
       Obtido   : ID #18: O que fazer se o elevador ou plataforma da estaç...
 ----------------------------------------------------------------------------
-[T08] ACERTO |  0.897 ms | Reformulação
+[T08] ACERTO |  0.889 ms | Reformulação
       Pergunta : O motorista do ônibus recusou meu embarque e fui constrangido
       Esperado : Como agir e denunciar recusa de embarque no 156 (ID #19)
       Obtido   : ID #19: Como agir em caso de recusa de embarque ou atend...
 ----------------------------------------------------------------------------
-[T09] ACERTO |  1.808 ms | Reformulação
+[T09] ACERTO |  1.758 ms | Reformulação
       Pergunta : Quais museus em SP dão gratuidade para pessoa com deficiência e acompanhante?
       Esperado : Acessibilidade e gratuidade em museus de SP (ID #20)
       Obtido   : ID #20: Quais museus e centros culturais em São Paulo of...
 ----------------------------------------------------------------------------
-[T10] ACERTO |  0.608 ms | Reformulação
+[T10] ACERTO |  0.602 ms | Reformulação
       Pergunta : Vou fazer o ENEM e preciso de tempo extra na prova
       Esperado : Direito a 60 minutos adicionais no ENEM/vestibulares (ID #11)
       Obtido   : ID #11: Existe tempo adicional para PCD no ENEM e vestib...
@@ -61,12 +61,12 @@ RELATÓRIO DE AVALIAÇÃO E INDICADORES DE DESEMPENHO — IncluiSP
       Esperado : Detectar empate entre ID #6 (BPC geral) e ID #16 (BPC vs Auxílio)
       Obtido   : Ambiguidade detectada entre IDs [6, 16]
 ----------------------------------------------------------------------------
-[T13] ACERTO |  0.568 ms | Limitação (Ambiguidade)
+[T13] ACERTO |  0.553 ms | Limitação (Ambiguidade)
       Pergunta : elevador
       Esperado : Detectar múltiplas correspondências (Estação Luz, Ônibus, Manutenção)
       Obtido   : Ambiguidade detectada entre IDs [13, 18, 3]
 ----------------------------------------------------------------------------
-[T14] ACERTO |  0.303 ms | Limitação (Fora do Escopo)
+[T14] ACERTO |  0.301 ms | Limitação (Fora do Escopo)
       Pergunta : Como tirar passaporte na Polícia Federal?
       Esperado : Informar ausência na base sem inventar resposta
       Obtido   : Sem correspondência na base (limite informado)
@@ -76,17 +76,17 @@ RELATÓRIO DE AVALIAÇÃO E INDICADORES DE DESEMPENHO — IncluiSP
       Esperado : Informar ausência na base e sugerir temas disponíveis
       Obtido   : Sem correspondência na base (limite informado)
 ----------------------------------------------------------------------------
-[T16] ACERTO |  0.109 ms | Estresse (Erro de Digitação)
+[T16] ACERTO |  0.107 ms | Estresse (Erro de Digitação)
       Pergunta : Como pedir isensao de ipva?
       Esperado : Identificar isenção de IPVA mesmo com erro ortográfico (ID #4)
       Obtido   : ID #4: Como funciona a isenção de IPVA para pessoas com...
 ----------------------------------------------------------------------------
-[T17] ACERTO |  0.542 ms | Estresse (Gíria Regional)
+[T17] ACERTO |  0.367 ms | Estresse (Gíria Regional)
       Pergunta : Onde consigo passe livre de busao em SP?
       Esperado : Identificar Bilhete Único Especial a partir de gíria (ID #1)
       Obtido   : ID #1: Como solicitar o Bilhete Único Especial para Pes...
 ----------------------------------------------------------------------------
-[T18] ERRO   |  3.598 ms | Estresse (Frase Longa)
+[T18] ERRO   |  1.963 ms | Estresse (Frase Longa)
       Pergunta : Oi bom dia tudo bem eu queria saber se por acaso existe algum lugar na cidade onde eu possa pedir aquela carteirinha para estacionar na vaga azul de deficiente
       Esperado : Filtrar ruído coloquial e recuperar Credencial Defis (ID #5)
       Obtido   : ID #8: Qual a porcentagem de cotas para PCD em concurso...
@@ -96,7 +96,7 @@ INDICADORES CONSOLIDADOS:
   • Respostas corretas         : 17
   • Falhas                     : 1
   • Taxa de acerto geral       : 94.4%
-  • Tempo médio de consulta    : 1.623 ms (mín: 0.001 ms | máx: 6.500 ms)
+  • Tempo médio de consulta    : 2.944 ms (mín: 0.001 ms | máx: 17.610 ms)
 
 DESEMPENHO POR CATEGORIA DE TESTE:
   • Pergunta Direta               : 5/5 (100.0%)
@@ -113,8 +113,8 @@ COMPARAÇÃO DE ALGORITMOS DE BUSCA (MESMOS 18 TESTES)
 ----------------------------------------------------------------------------
 Algoritmo                            | Acertos     | Taxa     | Tempo Médio
 ----------------------------------------------------------------------------
-1. Busca Simples (Palavra-Chave)     |  3/18       |   16.7% |   0.816 ms
-2. Busca Ranqueada (Pesos+Stopwords) | 17/18       |   94.4% |   1.623 ms
+1. Busca Simples (Palavra-Chave)     |  3/18       |   16.7% |   0.842 ms
+2. Busca Ranqueada (Pesos+Stopwords) | 17/18       |   94.4% |   2.944 ms
 ----------------------------------------------------------------------------
   • Falhas na Busca Simples: T01 (ambiguo), T02 (ambiguo), T03 (ambiguo), T04 (ambiguo), T05 (ambiguo), T06 (ambiguo), T07 (ambiguo), T08 (ambiguo), T09 (ambiguo), T10 (ambiguo), T14 (ambiguo), T15 (ambiguo), T16 (ambiguo), T17 (ambiguo), T18 (ambiguo) (ruído por palavras comuns e empates sem peso).
 
