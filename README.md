@@ -304,17 +304,17 @@ A frase completa do T18 está em `src/avaliacao.py`.
 |---|---|
 | Total de testes | 18 |
 | Respostas corretas | 17 |
-| Falhas | 1 | |
+| Falhas | 1 | 
 | Taxa de acerto geral | 94.4% |
-| Tempo médio de consulta | 1.194 ms |
-| Tempo mínimo / máximo | 0,001 ms / 4.615 ms |
+| Tempo médio de consulta | 2.944 ms |
+| Tempo mínimo / máximo | 0,001 ms / 17.610 ms |
 
 **Comparação de algoritmos de busca** (mesmos 18 casos):
 
 | Algoritmo | Acertos | Taxa | Tempo médio |
 |---|---|---|---|
-| Busca simples por palavra-chave | 3/18 | 16.7% | 0.725 ms |
-| Busca ranqueada (pesos, stopwords, sinônimos, índice) | 17/18 | 94.4% | 1.194 ms |
+| Busca simples por palavra-chave | 3/18 | 16.7% | 0.842 ms |
+| Busca ranqueada (pesos, stopwords, sinônimos, índice) | 17/18 | 94.4% | 2.944 ms |
 
 **Interpretação.**
 - Os tempos ficam na ordem de milissegundos, porque a base é pequena e roda localmente. O tempo de consulta não limita o uso.
