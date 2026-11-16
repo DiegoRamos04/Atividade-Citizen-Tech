@@ -364,6 +364,9 @@ def fluxo_comparar_prompts(base):
     limpar_tela()
     relacionados = busca_grafo.obter_relacionados(base, registro["id"], limite=3)
     print(prompts.comparar_modelos_prompt(registro, relacionados=relacionados))
+    relatorio_testes = avaliacao.executar_bateria_testes(base)
+    if relatorio_testes.get("comparacao_prompts"):
+        print("\n" + prompts.formatar_comparacao_testes(relatorio_testes["comparacao_prompts"]))
     pausar_retorno()
 
 

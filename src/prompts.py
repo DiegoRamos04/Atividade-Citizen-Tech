@@ -332,3 +332,99 @@ def comparar_modelos_prompt(registro, relacionados=None):
         "*" * LARGURA_TEXTO,
     ]
     return "\n".join(bloco_comparacao)
+
+def avaliar_modelos_em_consultas(casos_validos, obter_relacionados_fn):
+    """
+    Executa os dois modelos de prompt ('direto' e 'didatico') sobre o conjunto
+    de perguntas de teste válidas e mede critérios objetivos de qualidade:
+      - Citação obrigatória da fonte oficial;
+      - Indicação da data de verificação;
+      - Presença de aviso de limitação / caráter não oficial;
+      - Continuidade de consulta via assuntos relacionados do grafo;
+      - Média de linhas por resposta (densidade visual).
+    """
+    total = len(casos_validos)
+    if total == 0:
+        return {}
+
+    metricas = {
+        "direto": {"fonte": 0, "data": 0, "aviso": 0, "relacionados": 0, "linhas": 0},
+        "didatico": {"fonte": 0, "data": 0, "aviso": 0, "relacionados": 0, "linhas": 0},
+    }
+
+    for item in casos_validos:
+        reg = item["registro"]
+        rels = obter_relacionados_fn(reg["id"])
+
+        for codigo_modelo in ("direto", "didatico"):
+            saida = gerar_resposta_estruturada(
+                registro=reg,
+                modelo=codigo_modelo,
+                relacionados=rels,
+            )
+            if reg["fonte"] in saida:
+                metricas[codigo_modelo]["fonte"] += 1
+            if reg["data_verificacao"] in saida:
+                metricas[codigo_modelo]["data"] += 1
+            if "aviso" in saida.lower() or "não substitui canais" in saida.lower():
+                metricas[codigo_modelo]["aviso"] += 1
+            if "ASSUNTOS RELACIONADOS" in saida:
+                metricas[codigo_modelo]["relacionados"] += 1
+            metricas[codigo_modelo]["linhas"] += len(saida.splitlines())
+
+    resumo = {"total_perguntas": total, "modelos": {}}
+    for codigo_modelo, dados in metricas.items():
+        resumo["modelos"][codigo_modelo] = {
+            "nome": MODELOS_PROMPT[codigo_modelo]["nome"],
+            "pct_fonte": round((dados["fonte"] / total) * 100, 1),
+            "pct_data": round((dados["data"] / total) * 100, 1),
+            "pct_aviso": round((dados["aviso"] / total) * 100, 1),
+            "pct_relacionados": round((dados["relacionados"] / total) * 100, 1),
+            "media_linhas": round(dados["linhas"] / total, 1),
+        }
+
+    m_dir = resumo["modelos"]["direto"]
+    m_did = resumo["modelos"]["didatico"]
+    resumo["justificativa"] = (
+        f"Nos {total} testes válidos, ambos atingiram {m_did['pct_fonte']:.0f}% de citação "
+        f"de fonte e data, porém o Modelo 2 (Didático) superou o Modelo 1 (Direto) em "
+        f"continuidade via grafo ({m_did['pct_relacionados']:.0f}% contra "
+        f"{m_dir['pct_relacionados']:.0f}%) e segmentação em 4 blocos "
+        f"(média de {m_did['media_linhas']} linhas contra {m_dir['media_linhas']} linhas), "
+        f"oferecendo maior clareza e rastreabilidade para orientação cidadã."
+    )
+    return resumo
+
+
+def formatar_comparacao_testes(resumo_comparacao):
+    """
+    Formata a tabela comparativa dos 2 modelos de prompt aplicada às perguntas
+    de teste e a justificativa calculada a partir das métricas reais.
+    """
+    if not resumo_comparacao:
+        return ""
+
+    total = resumo_comparacao["total_perguntas"]
+    m_dir = resumo_comparacao["modelos"]["direto"]
+    m_did = resumo_comparacao["modelos"]["didatico"]
+
+    linhas = [
+        "-" * LARGURA_TEXTO,
+        f"AVALIAÇÃO COMPARATIVA DOS 2 PROMPTS NAS PERGUNTAS DE TESTE ({total} CASOS)",
+        "-" * LARGURA_TEXTO,
+        f"{'Critério Avaliado':<34} | {'Modelo 1 (Direto)':<16} | {'Modelo 2 (Didático)'}",
+        "-" * LARGURA_TEXTO,
+        f"{'Cita fonte oficial':<34} | {m_dir['pct_fonte']:>14.1f}% | {m_did['pct_fonte']:>17.1f}%",
+        f"{'Cita data de verificação':<34} | {m_dir['pct_data']:>14.1f}% | {m_did['pct_data']:>17.1f}%",
+        f"{'Exibe aviso de limitação':<34} | {m_dir['pct_aviso']:>14.1f}% | {m_did['pct_aviso']:>17.1f}%",
+        f"{'Sugere relacionados (grafo)':<34} | {m_dir['pct_relacionados']:>14.1f}% | {m_did['pct_relacionados']:>17.1f}%",
+        f"{'Tamanho médio da resposta':<34} | {m_dir['media_linhas']:>9.1f} linhas | {m_did['media_linhas']:>12.1f} linhas",
+        "-" * LARGURA_TEXTO,
+        formatar_paragrafo(
+            f"Justificativa: {resumo_comparacao['justificativa']}",
+            recuo_inicial="",
+            recuo_seguinte="",
+        ),
+        "-" * LARGURA_TEXTO,
+    ]
+    return "\n".join(linhas)

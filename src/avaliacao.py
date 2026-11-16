@@ -1,7 +1,9 @@
 import time
 
 from busca_grafo import buscar_orientacoes, classificar_resultado_busca
+import busca_grafo
 from prompts import validar_entrada_consulta
+import prompts
 
 CASOS_DE_TESTE = [
     # Perguntas Diretas
@@ -214,6 +216,18 @@ def executar_bateria_testes(base_dados, casos=CASOS_DE_TESTE):
     tempo_min_ms = min(tempos) if tempos else 0.0
     tempo_max_ms = max(tempos) if tempos else 0.0
 
+    casos_validos_prompt = []
+    for caso in casos:
+        if caso["tipo_esperado"] is not None:
+            res_busca = busca_grafo.buscar_orientacoes(base_dados, caso["pergunta"])
+            if res_busca:
+                casos_validos_prompt.append({"registro": res_busca[0]["registro"]})
+
+    comparacao_prompts = prompts.avaliar_modelos_em_consultas(
+        casos_validos_prompt,
+        lambda reg_id: busca_grafo.obter_relacionados(base_dados, reg_id, limite=3),
+    )
+
     return {
         "resultados": resultados_detalhados,
         "total_testes": total_testes,
@@ -224,6 +238,7 @@ def executar_bateria_testes(base_dados, casos=CASOS_DE_TESTE):
         "tempo_min_ms": tempo_min_ms,
         "tempo_max_ms": tempo_max_ms,
         "por_categoria": por_categoria,
+        "comparacao_prompts": comparacao_prompts,
     }
 
 
@@ -263,6 +278,10 @@ def formatar_relatorio_avaliacao(relatorio):
         linhas.append(
             f"  • {categoria:<30}: {dados['acertos']}/{dados['total']} ({taxa_cat:.1f}%)"
         )
+
+    if relatorio.get("comparacao_prompts"):
+        linhas.append("")
+        linhas.append(prompts.formatar_comparacao_testes(relatorio["comparacao_prompts"]))
 
     linhas.append("=" * 76)
     return "\n".join(linhas)
