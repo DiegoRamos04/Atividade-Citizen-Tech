@@ -414,7 +414,7 @@ def salvar_resultados_testes(relatorio, diretorio_saida=None):
     caminho_txt.write_text(texto_relatorio + "\n", encoding="utf-8")
 
     with caminho_csv.open("w", encoding="utf-8-sig", newline="") as arquivo_csv:
-        escritor = csv.writer(arquivo_csv, delimiter=";")
+        escritor = csv.writer(arquivo_csv, delimiter=",")
         escritor.writerow([
             "id_teste",
             "categoria",
