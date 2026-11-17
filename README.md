@@ -1,7 +1,7 @@
 # IncluiSP | Citizen Assist AI
 
 Assistente digital em terminal que orienta pessoas com deficiência (PcD) e seus acompanhantes sobre documentos, benefícios, direitos e mobilidade na cidade de São Paulo. Projeto da Global Solution 2026.2 (FIAP), desafio CitizenTech, case Citizen Assist AI. 
-O repositório inclui também uma versão web opcional, na pasta `incluisp/`, descrita na [seção 11](#11-complemento-opcional-versão-web-incluisp).
+O repositório inclui também uma versão web opcional, na pasta `incluisp/`.
 
 ## 1. Equipe
 
