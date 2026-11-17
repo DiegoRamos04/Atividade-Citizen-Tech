@@ -1,6 +1,7 @@
 # IncluiSP | Citizen Assist AI
 
-Assistente digital em terminal que orienta pessoas com deficiência (PcD) e seus acompanhantes sobre documentos, benefícios, direitos e mobilidade na cidade de São Paulo. Projeto da Global Solution 2026.2 (FIAP), desafio CitizenTech, case Citizen Assist AI.
+Assistente digital em terminal que orienta pessoas com deficiência (PcD) e seus acompanhantes sobre documentos, benefícios, direitos e mobilidade na cidade de São Paulo. Projeto da Global Solution 2026.2 (FIAP), desafio CitizenTech, case Citizen Assist AI. 
+O repositório inclui também uma versão web opcional, na pasta `incluisp/`, descrita na [seção 11](#11-complemento-opcional-versão-web-incluisp).
 
 ## 1. Equipe
 
@@ -22,7 +23,7 @@ Quem precisa de uma orientação sobre transporte gratuito, benefícios ou direi
 
 ### Solução
 
-O IncluiSP recebe uma pergunta ou uma escolha de menu, localiza a orientação em uma base verificada, mostra a resposta com a fonte e a data de verificação e avisa quando não há resposta confiável. O protótipo não usa modelo de linguagem nem API externa: toda resposta vem do arquivo `data/base.json`.
+O IncluiSP recebe uma pergunta ou uma escolha de menu, localiza a orientação em uma base verificada, mostra a resposta com a fonte e a data de verificação e avisa quando não há resposta confiável. O protótipo em Python não usa modelo de linguagem nem API externa: toda resposta vem do arquivo `data/base.json`.
 
 ### Público beneficiado
 
@@ -428,7 +429,7 @@ Em alguns sistemas o comando é `python3`. Os caminhos dos arquivos são resolvi
 │   ├── resultados_testes.csv     # registro dos testes (gerado pela opção 7)
 │   ├── resultados_testes.txt     # relatório dos testes (gerado pela opção 7)
 │   └── uso_ia.md                 # uso de IA e validação crítica
-├── incluisp/                     # versão web complementar (opcional)
+├── incluisp/                     # versão web complementar (opcional), com base e README próprios
 │   ├── data/
 │   │   ├── base.json
 │   │   └── transit.json
@@ -499,7 +500,7 @@ atualizadas nos órgãos públicos.
 
 **Acessibilidade.** A saída é só texto, sem cores nem imagens, com linhas de até 72 colunas e sem palavras cortadas. Os menus são numerados e o formato da resposta pode ser trocado para uma versão mais curta (opção 4). Não testamos o sistema com leitor de tela.
 
-**Privacidade.** O sistema não pede nem guarda dados pessoais. As consultas digitadas não são salvas. Os únicos arquivos gravados são `data/base.json` (pela opção 8) e os resultados dos testes em `docs/`. A tela inicial pede ao usuário que não informe dados pessoais.
+**Privacidade.** Na versão Python, o sistema não pede nem guarda dados pessoais. As consultas digitadas não são salvas. Os únicos arquivos gravados são `data/base.json` (pela opção 8) e os resultados dos testes em `docs/`. A tela inicial pede ao usuário que não informe dados pessoais.
 
 **Informação não oficial.** O IncluiSP é um protótipo acadêmico. Não representa SPTrans, Metrô, INSS, Prefeitura ou qualquer outro órgão e não promete integração com eles. A tela inicial e as respostas avisam que o assistente não substitui os canais oficiais e que as regras devem ser confirmadas. Registros que dependem de situação em tempo real (elevadores, chuva) informam que o assistente não monitora essas condições.
 
@@ -529,6 +530,7 @@ O assistente cobre o fluxo pedido no edital: recebe a pergunta ou a escolha de m
 - O assistente não consulta fontes em tempo real.
 - A interface em terminal exige familiaridade que nem todo usuário tem.
 - A avaliação tem as limitações descritas na seção 5.5.
+- Existem duas bases independentes (Python e Web), que podem divergir
 
 ### Possibilidades de melhoria
 
@@ -536,4 +538,4 @@ O assistente cobre o fluxo pedido no edital: recebe a pergunta ou a escolha de m
 - Ampliar a base e as perguntas de teste, com a participação de pessoas com deficiência.
 - Gerar as conexões do grafo a partir das palavras-chave, em vez de listá-las no código.
 - Criar um processo de revisão periódica das fontes e das datas de verificação.
-- Oferecer interface web ou chatbot, mantendo a base única em `data/base.json`.
+- Unificar data/base.json e incluisp/data/base.json em uma base única e aplicar à versão web a mesma validação e bateria de testes da versão Python.
