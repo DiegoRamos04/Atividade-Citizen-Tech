@@ -307,7 +307,7 @@ A frase completa do T18 está em `src/avaliacao.py`.
 | Falhas | 1 | 
 | Taxa de acerto geral | 94.4% |
 | Tempo médio de consulta | 2.944 ms |
-| Tempo mínimo / máximo | 0,001 ms / 17.610 ms |
+| Tempo mínimo / máximo | 0.001 ms / 17.610 ms |
 
 **Comparação de algoritmos de busca** (mesmos 18 casos):
 
@@ -321,6 +321,7 @@ A frase completa do T18 está em `src/avaliacao.py`.
 - A busca simples não descarta palavras comuns e não pontua por campo. Palavras como "como" casam com muitas perguntas e geram empates, que ela trata como ambiguidade. Falhas da busca simples: T01 (ambiguo), T02 (ambiguo), T03 (ambiguo), T04 (ambiguo), T05 (ambiguo), T06 (ambiguo), T07 (ambiguo), T08 (ambiguo), T09 (ambiguo), T10 (ambiguo), T14 (ambiguo), T15 (ambiguo), T16 (ambiguo), T17 (ambiguo), T18 (ambiguo) (ruído por palavras comuns e empates sem peso).
 - A taxa de acerto vale para estes 18 casos, escritos pela própria equipe. Ela não mede o desempenho em perguntas de qualquer pessoa.
 - O T16 passa porque a palavra-chave "ipva" foi digitada corretamente. A busca não corrige "isensao".
+- **T18 (único erro).** A consulta longa e coloquial ("...pedir aquela carteirinha para estacionar na vaga azul de deficiente") retornou o ID 8 (cotas em concursos, 11 pontos) em vez do ID 5 (Credencial Defis). Os termos "deficiente" e "vaga" casaram com o ID 8 por sinônimo ("pcd", "deficiência") e radical ("vagas"). Já "carteirinha" e "estacionar" não casaram com o ID 5, cujas palavras-chave são "credencial" e "estacionamento", e o ID 5 nem ficou entre os 3 primeiros. A busca depende de sinônimos cadastrados à mão e não reconhece que "carteirinha" e "credencial" são o mesmo documento. O erro é uma limitação real da busca, não uma falha de validação ou de base.
 
 ### 5.3 Teste de facilidade de uso
 
@@ -371,7 +372,8 @@ A frase completa do T18 está em `src/avaliacao.py`.
 1. **Reduzir o texto de cada resposta:** eliminar a repetição da lista de relacionados e colocar o aviso de limitação em uma linha, deixando a orientação e a fonte em destaque.
 2. **Evitar o beco sem saída quando a pergunta não está na base:** além do aviso, mostrar os temas com opção de escolha e os assuntos mais próximos da consulta, em vez de 3 exemplos fixos.
 3. **Indicar no menu principal qual opção serve para cada tipo de tarefa**, com um exemplo ao lado (por exemplo, "1. Fazer uma pergunta, como 'elevador quebrado'").
-4. **Tolerar erros de digitação** na busca, com comparação aproximada de palavras.
+4. **Ampliar a cobertura de sinônimos:** incluir termos coloquiais ("carteirinha", "cartão", "estacionar") no dicionário de sinônimos ou em novas palavras-chave do registro. Os testes mostraram que isso resolveria o T18.
+5. **Tolerar erros de digitação** na busca, com comparação aproximada de palavras.
 
 ### 5.5 Limitações da avaliação
 
@@ -382,6 +384,7 @@ A frase completa do T18 está em `src/avaliacao.py`.
 - Registramos o tempo total de cada sessão, e não o de cada tarefa. O tempo foi medido à mão e as tarefas foram definidas pela própria equipe.
 - O teste não incluiu pessoas com deficiência, que fazem parte do público do projeto, e não foi feito com leitor de tela.
 - A interface em terminal pode ter influenciado o desempenho de quem não tem familiaridade com ela (caso de P3).
+- A busca ranqueada falha quando o usuário usa palavras que não estão nas palavras-chave nem no dicionário de sinônimos (caso do T18).
 
 ---
 
