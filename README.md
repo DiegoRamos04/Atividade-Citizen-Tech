@@ -1,7 +1,7 @@
 # IncluiSP | Citizen Assist AI
 
-Assistente digital em terminal que orienta pessoas com deficiência (PcD) e seus acompanhantes sobre documentos, benefícios, direitos e mobilidade na cidade de São Paulo. Projeto da Global Solution 2026.2 (FIAP), desafio CitizenTech, case Citizen Assist AI. 
-O repositório inclui também uma versão web opcional, na pasta `incluisp/`.
+Assistente digital em terminal que orienta pessoas com deficiência (PcD) e seus acompanhantes sobre documentos, benefícios, direitos e mobilidade na cidade de São Paulo. Projeto da Global Solution 2026 (FIAP), desafio CitizenTech. 
+O repositório inclui também uma versão web, na pasta `incluisp/`.
 
 ## 1. Equipe
 
@@ -109,7 +109,7 @@ A leitura é feita por `base_dados.carregar_base_conhecimento()`.
 
 ### 3.3 Como acrescentar ou corrigir registros
 
-Sem alterar o código, de duas formas:
+Pode ser feito de duas formas:
 
 1. Pela opção 8 do menu, que pede os campos, valida, atribui o próximo ID e grava em `data/base.json`.
 2. Editando `data/base.json` diretamente.
@@ -161,9 +161,9 @@ Todas as orientações foram conferidas nas fontes abaixo. As datas de verifica�
 
 ### 3.6 Hierarquia e grafo
 
-**Hierarquia (3 níveis).** Tema -> subtema -> orientação. Serve para a navegação por menu (opção 2) e representa a relação "pertence a". O subtema vem do campo `subtema` do JSON.
+**Hierarquia (3 níveis).** Tema -> subtema -> orientação. Estrutura a navegação guiada por menu (opção 2), organizando os registros por agrupamento temático a partir do campo `subtema` do JSON.
 
-**Grafo de assuntos.** Cada orientação é um nó. As arestas ligam assuntos complementares, alternativos ou o próximo passo da consulta (por exemplo, Bilhete Único Especial -> Serviço Atende+ -> recusa de embarque). O grafo é direcionado e cada nó tem de 3 a 4 vizinhos. As conexões vêm de três fontes, em ordem de prioridade:
+**Grafo de assuntos.** Cada orientação é um nó. As arestas ligam assuntos complementares, alternativos ou o próximo passo da consulta (por exemplo, Bilhete Único Especial -> Serviço Atende+ -> recusa de embarque). O grafo é direcionado e cada nó tem de 3 a 4 vizinhos. As conexões vêm de três fontes, que são elencadas em ordem de prioridade:
 
 1. Campo `relacionados` do próprio registro no JSON.
 2. Dicionário `ARESTAS_SEMANTICAS` em `busca_grafo.py` (registros 1 a 22).
@@ -206,7 +206,7 @@ Os resultados são ordenados por pontuação, com o ID menor como desempate. Dep
 
 ### 3.9 Busca de referência (baseline)
 
-`buscar_simples_palavra_chave` percorre todos os registros e retorna os que têm qualquer termo da consulta nas palavras-chave ou na pergunta, sem stopwords, pesos ou sinônimos. Um resultado é "único"; dois ou mais são "ambíguo". Ela é usada só na avaliação, para comparar com a busca ranqueada (seção 5.2).
+`buscar_simples_palavra_chave` percorre todos os registros e retorna os que têm qualquer termo da consulta nas palavras-chave ou na pergunta, sem stopwords, pesos ou sinônimos. Um resultado é "único"; dois ou mais são "ambíguo". Ela é usada só na avaliação, para comparar com a busca ranqueada.
 
 ---
 
@@ -229,7 +229,7 @@ O protótipo não usa modelo de linguagem. Por isso cada modelo é uma especific
 | | Modelo 1 — Direto | Modelo 2 — Didático (padrão) |
 |---|---|---|
 | **Papel** | Assistente informativo para respostas rápidas e curtas | Assistente acessível que traduz direitos, benefícios e rotas em etapas claras |
-| **Regras** | Responder só com a base JSON; orientação em um bloco; citar fonte e data; incluir aviso curto de que não é canal oficial; nunca pedir dados pessoais | Confirmar o assunto identificado; linguagem simples e estruturada; destacar fonte e data; explicitar limites, caráter não oficial e necessidade de confirmação; sugerir até 3 assuntos relacionados |
+| **Regras** | Responder só com a base JSON; orientação em um bloco; citar fonte e data; incluir aviso curto de que não é canal oficial; nunca pedir dados pessoais | Confirmar o assunto identificado; linguagem simples e estruturada; destacar fonte e data; explicitar limites; caráter não oficial e necessidade de confirmação; sugerir até 3 assuntos relacionados |
 | **Formato** | Tema, orientação, atenção (se houver), fonte e data, aviso | 4 blocos: (1) assunto identificado, (2) orientação cidadã, (3) fonte e limites, (4) assuntos relacionados |
 
 ### 4.3 Comparação dos modelos
@@ -244,7 +244,7 @@ A comparação é feita nas 13 consultas de teste que têm resposta esperada (T0
 | Sugere assuntos relacionados | 0% | 100% |
 | Tamanho médio da resposta | 13.5 linhas | 34.2 linhas |
 
-**Conclusão.** Os dois modelos são consistentes, porque seguem sempre o mesmo formato. O Didático foi adotado como padrão por separar identificação do assunto, orientação, fonte e limites e por incluir a continuidade da consulta. O custo é o texto mais longo, e um participante do teste de usabilidade comentou o excesso de texto. Por isso o Direto continua disponível na opção 4. Os critérios medem a presença dos elementos, não o quanto o leitor entende a resposta.
+**Conclusão.** Os dois modelos são consistentes, porque seguem sempre o mesmo formato. O Didático foi adotado como padrão por separar identificação do assunto, orientação, fonte e limites e por incluir a continuidade da consulta. O custo é o texto mais longo. Por isso o Direto continua disponível na opção 4.
 
 ### 4.4 Tratamento de limitações
 
@@ -264,11 +264,11 @@ A comparação é feita nas 13 consultas de teste que têm resposta esperada (T0
 
 ## 5. Testes, indicadores e interpretação
 
-Foram feitos dois tipos de avaliação: uma bateria automatizada de 18 perguntas de teste (seções 5.1 e 5.2) e um teste de facilidade de uso com 3 participantes (seção 5.3).
+Foram feitos dois tipos de avaliação: uma bateria automatizada de 18 perguntas de teste e um teste de facilidade de uso com 3 participantes.
 
 ### 5.1 Plano de testes automatizados
 
-A bateria está em `src/avaliacao.py` e roda pela opção 7 do menu. Ela tem 18 casos: 5 perguntas diretas, 5 reformulações em linguagem cotidiana, 5 situações de limitação (entrada vazia, 2 ambiguidades e 2 consultas fora do escopo) e 3 casos de estresse (erro de digitação, gíria e frase longa).
+A bateria está em `src/avaliacao.py` e roda pela opção 7 do menu. Ela tem 18 casos, sendo eles 5 perguntas diretas, 5 reformulações em linguagem cotidiana, 5 situações de limitação (entrada vazia, 2 ambiguidades e 2 consultas fora do escopo) e 3 casos de estresse (erro de digitação, gíria e frase longa).
 
 **Critério de acerto.** O comportamento obtido deve ser igual ao esperado. Nas respostas únicas, o ID retornado também deve ser o esperado.
 
@@ -319,14 +319,14 @@ A frase completa do T18 está em `src/avaliacao.py`.
 
 **Interpretação.**
 - Os tempos ficam na ordem de milissegundos, porque a base é pequena e roda localmente. O tempo de consulta não limita o uso.
-- A busca simples não descarta palavras comuns e não pontua por campo. Palavras como "como" casam com muitas perguntas e geram empates, que ela trata como ambiguidade. Falhas da busca simples: T01 (ambiguo), T02 (ambiguo), T03 (ambiguo), T04 (ambiguo), T05 (ambiguo), T06 (ambiguo), T07 (ambiguo), T08 (ambiguo), T09 (ambiguo), T10 (ambiguo), T14 (ambiguo), T15 (ambiguo), T16 (ambiguo), T17 (ambiguo), T18 (ambiguo) (ruído por palavras comuns e empates sem peso).
+- A busca simples não descarta palavras comuns e não pontua por campo. Termos frequentes, a exemplo de "como", casam com muitas perguntas e geram empates, classificados pelo algoritmo como ambiguidade. Falhas da busca simples: T01 (ambiguo), T02 (ambiguo), T03 (ambiguo), T04 (ambiguo), T05 (ambiguo), T06 (ambiguo), T07 (ambiguo), T08 (ambiguo), T09 (ambiguo), T10 (ambiguo), T14 (ambiguo), T15 (ambiguo), T16 (ambiguo), T17 (ambiguo), T18 (ambiguo) (ruído por palavras comuns e empates sem peso).
 - A taxa de acerto vale para estes 18 casos, escritos pela própria equipe. Ela não mede o desempenho em perguntas de qualquer pessoa.
 - O T16 passa porque a palavra-chave "ipva" foi digitada corretamente. A busca não corrige "isensao".
-- **T18 (único erro).** A consulta longa e coloquial ("...pedir aquela carteirinha para estacionar na vaga azul de deficiente") retornou o ID 8 (cotas em concursos, 11 pontos) em vez do ID 5 (Credencial Defis). Os termos "deficiente" e "vaga" casaram com o ID 8 por sinônimo ("pcd", "deficiência") e radical ("vagas"). Já "carteirinha" e "estacionar" não casaram com o ID 5, cujas palavras-chave são "credencial" e "estacionamento", e o ID 5 nem ficou entre os 3 primeiros. A busca depende de sinônimos cadastrados à mão e não reconhece que "carteirinha" e "credencial" são o mesmo documento. O erro é uma limitação real da busca, não uma falha de validação ou de base.
+- **T18 (único erro).** A consulta longa e informal ("...pedir aquela carteirinha para estacionar na vaga azul de deficiente") retornou o ID 8 (cotas em concursos, 11 pontos) em vez do ID 5 (Credencial Defis). Os termos "deficiente" e "vaga" casaram com o ID 8 por sinônimo ("pcd", "deficiência") e radical ("vagas"). Já "carteirinha" e "estacionar" não casaram com o ID 5, cujas palavras-chave são "credencial" e "estacionamento", e o ID 5 nem ficou entre os 3 primeiros. A busca depende de sinônimos cadastrados à mão e não reconhece que "carteirinha" e "credencial" são o mesmo documento. O erro é uma limitação real da busca, não uma falha de validação ou de base.
 
 ### 5.3 Teste de facilidade de uso
 
-**Método.** Aplicamos o teste com 3 participantes (P1 a P3), sem registrar nome ou outros dados pessoais. P1 e P2 são estudantes de TI (nenhum integrante da equipe) e P3 não tem experiência com TI nem com terminal. Cada um recebeu 6 tarefas por escrito e usou o sistema (`python src/sistema.py`) sem explicação prévia. Cronometramos o tempo total de cada sessão e anotamos erros e dificuldades. Quando o participante não avançava, recebia ajuda e a tarefa era classificada como "com ajuda". Ao final, os participantes responderam a uma avaliação rápida de satisfação (escala de 1 a 5).
+**Método.** Aplicamos o teste com 3 participantes (P1 a P3), sem registrar nome ou outros dados pessoais. P1 e P2 são estudantes de TI (nenhum integrante da equipe) e P3 não tem experiência com TI. Cada um recebeu 6 tarefas por escrito e usou o sistema (`python src/sistema.py`) sem explicação prévia. Cronometramos o tempo total de cada sessão e anotamos erros e dificuldades. Quando o participante não avançava, recebia ajuda e a tarefa era classificada como "com ajuda". Ao final, os participantes responderam a uma avaliação rápida de satisfação (escala de 1 a 5).
 
 **Resultados por tarefa** (S = concluiu sozinho, A = concluiu com ajuda)
 
@@ -334,7 +334,7 @@ A frase completa do T18 está em `src/avaliacao.py`.
 |---|---|---|---|
 | 1. Quantidade de temas | S | S | S |
 | 2. Busca do Bilhete Único Especial | S | S | S |
-| 3. IPVA pelo menu de temas | S | S | S (hesitou, achou a opção sozinho) |
+| 3. IPVA pelo menu de temas | S | S | S (hesitou, mas achou a opção sozinho) |
 | 4. "bpc" e ambiguidade | S | S | A |
 | 5. Pergunta fora da base (passaporte) | S | S | A |
 | 6. Continuar por assunto relacionado | S (1 erro, concluiu em seguida) | A | S |
@@ -366,15 +366,14 @@ A frase completa do T18 está em `src/avaliacao.py`.
 - P3, tarefa 5: procurou a pergunta em outra opção do menu por ter feito algo parecido na tarefa 2. Precisou de ajuda.
 - P1 comentou que as respostas têm muito texto para o tempo de leitura.
 
-**Interpretação.** Todas as tarefas foram concluídas, e 83,3% delas sem ajuda. As dificuldades se concentraram em três pontos: continuar a consulta por assuntos relacionados (tarefa 6, duas ocorrências), a tela de ambiguidade (tarefa 4) e a escolha da opção do menu para perguntas em texto (tarefas 3 e 5). P3, sem experiência com terminal, concentrou os erros e foi o mais lento (7 min 40 s, contra 5 min 30 s de P2 e 4 min de P1). Isso sugere que a interface de texto pesa mais para quem não está acostumado. Na satisfação, a navegação teve média 4,7/5, a clareza da linguagem 4,3/5 e as fontes e avisos 4,0/5. Pelo código, o Modelo Didático mostra quatro blocos por resposta, e a lista de assuntos relacionados aparece duas vezes na mesma tela (no bloco 4 e no menu de continuidade). Isso aumenta o texto e pode ter contribuído para as dificuldades na tarefa 6.
+**Interpretação.** Todas as tarefas foram concluídas, e 83,3% delas sem ajuda. As dificuldades se concentraram em três pontos: continuar a consulta por assuntos relacionados (tarefa 6, duas ocorrências), a tela de ambiguidade (tarefa 4) e a escolha da opção do menu para perguntas em texto (tarefas 3 e 5). P3, sem experiência com terminal, concentrou os erros e foi o mais lento (7 min 40 s, contra 5 min 30 s de P2 e 4 min de P1). Isso sugere que a interface de texto pesa mais para quem não está acostumado. Na satisfação, a navegação teve média 4,7/5, a clareza da linguagem 4,3/5 e as fontes e avisos 4,0/5. Pelo código, o Modelo Didático mostra quatro blocos por resposta. Isso aumenta o texto e pode ter contribuído para as dificuldades na tarefa 6.
 
 ### 5.4 Melhorias possíveis
 
-1. **Reduzir o texto de cada resposta:** eliminar a repetição da lista de relacionados e colocar o aviso de limitação em uma linha, deixando a orientação e a fonte em destaque.
-2. **Evitar o beco sem saída quando a pergunta não está na base:** além do aviso, mostrar os temas com opção de escolha e os assuntos mais próximos da consulta, em vez de 3 exemplos fixos.
-3. **Indicar no menu principal qual opção serve para cada tipo de tarefa**, com um exemplo ao lado (por exemplo, "1. Fazer uma pergunta, como 'elevador quebrado'").
-4. **Ampliar a cobertura de sinônimos:** incluir termos coloquiais ("carteirinha", "cartão", "estacionar") no dicionário de sinônimos ou em novas palavras-chave do registro. Os testes mostraram que isso resolveria o T18.
-5. **Tolerar erros de digitação** na busca, com comparação aproximada de palavras.
+1. **Evitar o beco sem saída quando a pergunta não está na base:** além do aviso, mostrar os temas com opção de escolha e os assuntos mais próximos da consulta, em vez de 3 exemplos fixos.
+2. **Indicar no menu principal qual opção serve para cada tipo de tarefa**, com um exemplo ao lado (por exemplo, "1. Fazer uma pergunta, como 'elevador quebrado'").
+3. **Ampliar a cobertura de sinônimos:** incluir termos coloquiais ("carteirinha", "cartão", "estacionar") no dicionário de sinônimos ou em novas palavras-chave do registro. Os testes mostraram que isso resolveria o T18.
+4. **Tolerar erros de digitação** na busca, com comparação aproximada de palavras.
 
 ### 5.5 Limitações da avaliação
 
@@ -498,7 +497,7 @@ atualizadas nos órgãos públicos.
 
 **Clareza.** As orientações são resumidas em linguagem simples. Toda resposta mostra fonte e data de verificação. Quando a orientação exige confirmação (IDs 16 a 22), o aviso específico aparece em destaque.
 
-**Acessibilidade.** A saída é só texto, sem cores nem imagens, com linhas de até 72 colunas e sem palavras cortadas. Os menus são numerados e o formato da resposta pode ser trocado para uma versão mais curta (opção 4). Não testamos o sistema com leitor de tela.
+**Acessibilidade.** A saída é só texto, sem cores nem imagens, com linhas de até 72 colunas e sem palavras cortadas. Os menus são numerados e o formato da resposta pode ser trocado para uma versão mais curta (opção 4). 
 
 **Privacidade.** Na versão Python, o sistema não pede nem guarda dados pessoais. As consultas digitadas não são salvas. Os únicos arquivos gravados são `data/base.json` (pela opção 8) e os resultados dos testes em `docs/`. A tela inicial pede ao usuário que não informe dados pessoais.
 
@@ -520,7 +519,7 @@ O mesmo endereço está em `docs/link_video.txt`.
 
 ### Conclusões
 
-O assistente cobre o fluxo pedido no edital: recebe a pergunta ou a escolha de menu, localiza a orientação, mostra resposta, fonte e data e informa o limite quando não há base. A base tem 23 orientações em 3 temas e 6 subtemas, com validação na leitura e manutenção pelo menu. A busca ranqueada com índice invertido foi comparada com uma busca simples, e os dois modelos de prompt foram comparados nas mesmas perguntas de teste. O teste com 3 pessoas apontou onde o fluxo precisa melhorar: navegação por assuntos relacionados, tela de ambiguidade e quantidade de texto.
+O assistente cobre o fluxo pedido no edital, pois recebe a pergunta ou a escolha de menu, localiza a orientação, mostra resposta, fonte e data e informa o limite quando não há base. A base tem 23 orientações em 3 temas e 6 subtemas, com validação na leitura e manutenção pelo menu. A busca ranqueada com índice invertido foi comparada com uma busca simples, e os dois modelos de prompt foram comparados nas mesmas perguntas de teste. O teste com 3 pessoas apontou onde o fluxo precisa melhorar: navegação por assuntos relacionados, tela de ambiguidade e quantidade de texto.
 
 ### Limitações
 
@@ -529,12 +528,12 @@ O assistente cobre o fluxo pedido no edital: recebe a pergunta ou a escolha de m
 - A busca não corrige erros de digitação.
 - O assistente não consulta fontes em tempo real.
 - A interface em terminal exige familiaridade que nem todo usuário tem.
-- A avaliação tem as limitações descritas na seção 5.5.
+- A avaliação tem as limitações descritas no tópico 5.5.
 - Existem duas bases independentes (Python e Web), que podem divergir
 
 ### Possibilidades de melhoria
 
-- Aplicar as melhorias da seção 5.4.
+- Aplicar as melhorias do tópico 5.4.
 - Ampliar a base e as perguntas de teste, com a participação de pessoas com deficiência.
 - Gerar as conexões do grafo a partir das palavras-chave, em vez de listá-las no código.
 - Criar um processo de revisão periódica das fontes e das datas de verificação.
