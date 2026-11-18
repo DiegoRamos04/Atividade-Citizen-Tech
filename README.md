@@ -529,7 +529,7 @@ O assistente cobre o fluxo pedido no edital, pois recebe a pergunta ou a escolha
 - O assistente não consulta fontes em tempo real.
 - A interface em terminal exige familiaridade que nem todo usuário tem.
 - A avaliação tem as limitações descritas no tópico 5.5.
-- Existem duas bases independentes (Python e Web), que podem divergir
+- Existem duas bases independentes (Python e Web), que podem divergir.
 
 ### Possibilidades de melhoria
 
@@ -537,4 +537,4 @@ O assistente cobre o fluxo pedido no edital, pois recebe a pergunta ou a escolha
 - Ampliar a base e as perguntas de teste, com a participação de pessoas com deficiência.
 - Gerar as conexões do grafo a partir das palavras-chave, em vez de listá-las no código.
 - Criar um processo de revisão periódica das fontes e das datas de verificação.
-- Unificar data/base.json e incluisp/data/base.json em uma base única e aplicar à versão web a mesma validação e bateria de testes da versão Python.
+- Unificar `data/base.json` e `incluisp/data/base.json` em uma base única e aplicar à versão web a mesma validação e bateria de testes da versão Python.
