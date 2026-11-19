@@ -509,7 +509,7 @@ atualizadas nos órgãos públicos.
 
 ## 9. Vídeo de apresentação
 
-Link (YouTube, "Não Listado"): [PREENCHER]
+Link (YouTube, "Não Listado"): https://www.youtube.com/watch?v=op99EEuDWac
 
 O mesmo endereço está em `docs/link_video.txt`.
 
